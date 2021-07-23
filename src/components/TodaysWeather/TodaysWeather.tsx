@@ -29,6 +29,7 @@ const TodaysWeather: FC = () => {
                 <div className="weather-info">
                     <p>
                         Feels like {Math.round(current.feels_like)}°F,{' '}
+                        {current.weather[0].main},{' '}
                         {current.weather[0].description}
                     </p>
                     <p>Humidity: {current.humidity}%</p>

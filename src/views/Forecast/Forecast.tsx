@@ -6,6 +6,8 @@ import Wind from '../Wind';
 import { useWeatherContext } from '../../providers/WeatherProvider';
 import { DEFAULT_TABS } from '../../constants/constants';
 
+import './index.css';
+
 interface ForecastProps {
     currentGraphTab: string;
     changeGraphTab: (selectedGraphTab: string) => void;
@@ -19,7 +21,7 @@ const Forecast: FC<ForecastProps> = (props) => {
         <div>
             <div className="tabs">
                 {' '}
-                <div className="tabs">
+                <div className="tabs-time-format">
                     {' '}
                     <button
                         type="button"
@@ -38,24 +40,27 @@ const Forecast: FC<ForecastProps> = (props) => {
                         Daily
                     </button>
                 </div>
-                <button
-                    type="button"
-                    onClick={() => changeGraphTab(graphTabs.temperature)}
-                >
-                    {graphTabs.temperature}
-                </button>
-                <button
-                    type="button"
-                    onClick={() => changeGraphTab(graphTabs.precipitation)}
-                >
-                    {graphTabs.precipitation}
-                </button>{' '}
-                <button
-                    type="button"
-                    onClick={() => changeGraphTab(graphTabs.wind)}
-                >
-                    {graphTabs.wind}
-                </button>
+                <span className="divider" />
+                <div className="tabs-weather-type">
+                    <button
+                        type="button"
+                        onClick={() => changeGraphTab(graphTabs.temperature)}
+                    >
+                        {graphTabs.temperature}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => changeGraphTab(graphTabs.precipitation)}
+                    >
+                        {graphTabs.precipitation}
+                    </button>{' '}
+                    <button
+                        type="button"
+                        onClick={() => changeGraphTab(graphTabs.wind)}
+                    >
+                        {graphTabs.wind}
+                    </button>
+                </div>
             </div>
             {currentGraphTab === graphTabs.temperature && <Temperature />}
             {currentGraphTab === graphTabs.precipitation && <Precipitation />}
