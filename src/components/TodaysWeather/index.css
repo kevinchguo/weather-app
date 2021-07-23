@@ -1,0 +1,35 @@
+.todays-weather {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.location-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.location-details h1 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.weather-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.temperature-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.weather-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.temperature {
+    font-size: 3rem;
+}

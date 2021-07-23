@@ -1,17 +1,60 @@
 import { FC } from 'react';
-import { CurrentWeather } from '../../types/weather';
+import { useWeatherContext } from '../../providers/WeatherProvider';
+import './index.css';
 
-interface TodaysWeatherProps {
-    currentWeather: CurrentWeather;
-}
-
-const TodaysWeather: FC<TodaysWeatherProps> = (props) => {
-    const { currentWeather } = props;
+const TodaysWeather: FC = () => {
+    const { weatherData, currentCity } = useWeatherContext();
+    const { current } = weatherData;
+    console.log(current);
     return (
-        <div>
-            <h1>Today</h1>
-            <div className="details">
-                <p>{JSON.stringify(currentWeather)}</p>
+        <div className="todays-weather">
+            <div className="location-details">
+                <h1>
+                    Today in {currentCity} at{' '}
+                    {new Date(current.dt * 1000).toLocaleString('en-US', {
+                        timeZoneName: 'long',
+                    })}
+                </h1>
+            </div>
+            <div className="weather-details">
+                <div className="temperature-container">
+                    <p>
+                        <img
+                            src={`https://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png`}
+                            alt={current.weather[0].icon}
+                        />
+                    </p>
+                    <p className="temperature">{Math.round(current.temp)}°F</p>
+                </div>
+                <div className="weather-info">
+                    <p>
+                        Feels like {Math.round(current.feels_like)}°F,{' '}
+                        {current.weather[0].description}
+                    </p>
+                    <p>Humidity: {current.humidity}%</p>
+                    <p>
+                        Sunrise:{' '}
+                        {new Date(current.sunrise * 1000).toLocaleString(
+                            'en-US',
+                            {
+                                hour: 'numeric',
+                                minute: '2-digit',
+                                second: '2-digit',
+                            }
+                        )}
+                    </p>
+                    <p>
+                        Sunset:{' '}
+                        {new Date(current.sunset * 1000).toLocaleString(
+                            'en-US',
+                            {
+                                hour: 'numeric',
+                                minute: '2-digit',
+                                second: '2-digit',
+                            }
+                        )}
+                    </p>
+                </div>
             </div>
         </div>
     );

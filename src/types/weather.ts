@@ -2,7 +2,8 @@ export interface OneCallWeatherAPI {
     lat: number;
     lon: number;
     timezone: string;
-    timezoneOffset: number;
+    // eslint-disable-next-line camelcase
+    timezone_offset: number;
     current: CurrentWeather;
     hourly: HourlyWeather[];
     daily: DailyWeather[];
@@ -14,16 +15,21 @@ export interface CurrentWeather {
     sunrise: number;
     sunset: number;
     temp: number;
-    feelsLike: number;
+    // eslint-disable-next-line camelcase
+    feels_like: number;
     pressure: number;
     humidity: number;
-    dewPoint: number;
+    // eslint-disable-next-line camelcase
+    dew_point: number;
     uvi: number;
     clouds: number;
     visibility: number;
-    windSpeed: number;
-    windDeg: number;
-    windGust: number;
+    // eslint-disable-next-line camelcase
+    wind_speed: number;
+    // eslint-disable-next-line camelcase
+    wind_deg: number;
+    // eslint-disable-next-line camelcase
+    wind_gust: number;
     weather: Weather[];
     rain?: Rain;
 }
@@ -31,16 +37,21 @@ export interface CurrentWeather {
 export interface HourlyWeather {
     dt: number;
     temp: number;
-    feelsLike: number;
+    // eslint-disable-next-line camelcase
+    feels_like: number;
     pressure: number;
     humidity: number;
-    dewPoint: number;
+    // eslint-disable-next-line camelcase
+    dew_point: number;
     uvi: number;
     clouds: number;
     visibility: number;
-    windSpeed: number;
-    windDeg: number;
-    windGust: number;
+    // eslint-disable-next-line camelcase
+    wind_speed: number;
+    // eslint-disable-next-line camelcase
+    wind_deg: number;
+    // eslint-disable-next-line camelcase
+    wind_gust: number;
     weather: Weather[];
     pop: number;
     rain?: Rain;
@@ -54,13 +65,18 @@ export interface DailyWeather {
     moonset: number;
     moonPhase: number;
     temp: Temp;
-    feelsLike: FeelsLike;
+    // eslint-disable-next-line camelcase
+    feels_like: FeelsLike;
     pressure: number;
     humidity: number;
-    dewPoint: number;
-    windSpeed: number;
-    windDeg: number;
-    windGust: number;
+    // eslint-disable-next-line camelcase
+    dew_point: number;
+    // eslint-disable-next-line camelcase
+    wind_speed: number;
+    // eslint-disable-next-line camelcase
+    wind_deg: number;
+    // eslint-disable-next-line camelcase
+    wind_gust: number;
     weather: Weather[];
     clouds: number;
     pop: number;
@@ -69,7 +85,8 @@ export interface DailyWeather {
 }
 
 export interface Alerts {
-    senderName: string;
+    // eslint-disable-next-line camelcase
+    sender_name: string;
     event: string;
     start: number;
     end: number;

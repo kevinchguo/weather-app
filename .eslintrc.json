@@ -25,6 +25,7 @@
             "error",
             { "functions": true, "classes": true, "variables": false }
         ],
+        "camelcase": ["error", { "properties": "never" }],
         "arrow-body-style": ["error", "as-needed"],
         "linebreak-style": 0,
         "implicit-arrow-linebreak": ["warn", "beside"],
