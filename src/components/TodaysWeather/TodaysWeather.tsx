@@ -4,56 +4,57 @@ import './index.css';
 
 const TodaysWeather: FC = () => {
     const { weatherData, currentCity } = useWeatherContext();
-    const { current } = weatherData;
-    console.log(current);
     return (
         <div className="todays-weather">
             <div className="location-details">
                 <h1>
                     Today in {currentCity} at{' '}
-                    {new Date(current.dt * 1000).toLocaleString('en-US', {
-                        timeZoneName: 'long',
-                    })}
+                    {new Date(weatherData.current.dt * 1000).toLocaleString(
+                        'en-US',
+                        {
+                            timeZoneName: 'long',
+                        }
+                    )}
                 </h1>
             </div>
             <div className="weather-details">
                 <div className="temperature-container">
                     <p>
                         <img
-                            src={`https://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png`}
-                            alt={current.weather[0].icon}
+                            src={`https://openweathermap.org/img/wn/${weatherData.current.weather[0].icon}@2x.png`}
+                            alt={weatherData.current.weather[0].icon}
                         />
                     </p>
-                    <p className="temperature">{Math.round(current.temp)}°F</p>
+                    <p className="temperature">
+                        {Math.round(weatherData.current.temp)}°F
+                    </p>
                 </div>
                 <div className="weather-info">
                     <p>
-                        Feels like {Math.round(current.feels_like)}°F,{' '}
-                        {current.weather[0].main},{' '}
-                        {current.weather[0].description}
+                        Feels like {Math.round(weatherData.current.feels_like)}
+                        °F, {weatherData.current.weather[0].main},{' '}
+                        {weatherData.current.weather[0].description}
                     </p>
-                    <p>Humidity: {current.humidity}%</p>
+                    <p>Humidity: {weatherData.current.humidity}%</p>
                     <p>
                         Sunrise:{' '}
-                        {new Date(current.sunrise * 1000).toLocaleString(
-                            'en-US',
-                            {
-                                hour: 'numeric',
-                                minute: '2-digit',
-                                second: '2-digit',
-                            }
-                        )}
+                        {new Date(
+                            weatherData.current.sunrise * 1000
+                        ).toLocaleString('en-US', {
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            second: '2-digit',
+                        })}
                     </p>
                     <p>
                         Sunset:{' '}
-                        {new Date(current.sunset * 1000).toLocaleString(
-                            'en-US',
-                            {
-                                hour: 'numeric',
-                                minute: '2-digit',
-                                second: '2-digit',
-                            }
-                        )}
+                        {new Date(
+                            weatherData.current.sunset * 1000
+                        ).toLocaleString('en-US', {
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            second: '2-digit',
+                        })}
                     </p>
                 </div>
             </div>

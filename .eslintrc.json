@@ -33,6 +33,7 @@
         "indent": ["error", 4],
         "no-tabs": 0,
         "semi": "error",
+        "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
         "comma-dangle": [
             "error",
             {

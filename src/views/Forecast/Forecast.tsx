@@ -15,7 +15,7 @@ interface ForecastProps {
 }
 
 const Forecast: FC<ForecastProps> = (props) => {
-    const { currentTab, changeTab } = useWeatherContext();
+    const { changeTab } = useWeatherContext();
     const { currentGraphTab, changeGraphTab, graphTabs } = props;
     return (
         <div>

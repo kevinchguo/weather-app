@@ -19,9 +19,15 @@ interface HourlyTemperatureChartData {
     y: number;
 }
 
+interface DailyWeatherChartData {
+    morn: HourlyTemperatureChartData[];
+    day: HourlyTemperatureChartData[];
+    eve: HourlyTemperatureChartData[];
+    night: HourlyTemperatureChartData[];
+}
+
 const Temperature: FC = () => {
     const { weatherData, currentTab } = useWeatherContext();
-
     const minHourlyTemp: number = weatherData.hourly.reduce(
         (acc, tempAtHour) => Math.min(acc, Math.round(tempAtHour.temp)),
         Infinity
@@ -48,8 +54,8 @@ const Temperature: FC = () => {
         <div className="temperature">
             <div className="hourly-temp-chart">
                 <VictoryChart
-                    width={1000}
-                    height={400}
+                    width={900}
+                    height={300}
                     maxDomain={{
                         y: maxHourlyTemp + 1,
                     }}
@@ -100,19 +106,52 @@ const Temperature: FC = () => {
         </div>
     );
 
+    const dailyWeatherData: DailyWeatherChartData = {
+        morn: [],
+        day: [],
+        eve: [],
+        night: [],
+    };
+
+    const reducedDailyWeatherData: DailyWeatherChartData =
+        weatherData.daily.reduce((acc, curr) => {
+            if (!acc.morn) {
+                acc.morn = [{ x: curr.dt, y: Math.round(curr.temp.morn) }];
+            } else if (!acc.day) {
+                acc.day = [{ x: curr.dt, y: Math.round(curr.temp.day) }];
+            } else if (!acc.eve) {
+                acc.eve = [{ x: curr.dt, y: Math.round(curr.temp.eve) }];
+            } else if (!acc.night) {
+                acc.night = [{ x: curr.dt, y: Math.round(curr.temp.night) }];
+            }
+
+            acc.morn.push({ x: curr.dt, y: Math.round(curr.temp.morn) });
+            acc.day.push({ x: curr.dt, y: Math.round(curr.temp.day) });
+            acc.eve.push({ x: curr.dt, y: Math.round(curr.temp.eve) });
+            acc.night.push({ x: curr.dt, y: Math.round(curr.temp.night) });
+            return acc;
+        }, dailyWeatherData);
+
+    // const reduceDailyWeatherData = weatherData.daily.reduce((acc, curr) =>
+
     const renderDailyWeather = () => (
         <div>
             <div>
-                <VictoryChart scale={{ x: 'time' }} width={1000} height={400}>
-                    <VictoryStack colorScale="warm">
-                        <VictoryGroup
-                            data={[
-                                { x: new Date(1986, 1, 1), y: 2 },
-                                { x: new Date(1996, 1, 1), y: 3 },
-                                { x: new Date(2006, 1, 1), y: 5 },
-                                { x: new Date(2016, 1, 1), y: 4 },
-                            ]}
-                        >
+                <VictoryChart width={900} height={300}>
+                    <VictoryStack
+                        animate={{
+                            onExit: {
+                                duration: 500,
+                                before: () => ({
+                                    _y: 0,
+                                    fill: 'orange',
+                                    label: 'BYE',
+                                }),
+                            },
+                        }}
+                        colorScale="cool"
+                    >
+                        <VictoryGroup data={reducedDailyWeatherData.morn}>
                             <VictoryArea />
                             <VictoryPortal>
                                 <VictoryScatter
@@ -120,14 +159,7 @@ const Temperature: FC = () => {
                                 />
                             </VictoryPortal>
                         </VictoryGroup>
-                        <VictoryGroup
-                            data={[
-                                { x: new Date(1986, 1, 1), y: 4 },
-                                { x: new Date(1996, 1, 1), y: 3 },
-                                { x: new Date(2006, 1, 1), y: 2 },
-                                { x: new Date(2016, 1, 1), y: 5 },
-                            ]}
-                        >
+                        <VictoryGroup data={reducedDailyWeatherData.day}>
                             <VictoryArea />
                             <VictoryPortal>
                                 <VictoryScatter
@@ -135,14 +167,15 @@ const Temperature: FC = () => {
                                 />
                             </VictoryPortal>
                         </VictoryGroup>
-                        <VictoryGroup
-                            data={[
-                                { x: new Date(1986, 1, 1), y: 3 },
-                                { x: new Date(1996, 1, 1), y: 1 },
-                                { x: new Date(2006, 1, 1), y: 4 },
-                                { x: new Date(2016, 1, 1), y: 2 },
-                            ]}
-                        >
+                        <VictoryGroup data={reducedDailyWeatherData.eve}>
+                            <VictoryArea />
+                            <VictoryPortal>
+                                <VictoryScatter
+                                    style={{ data: { fill: 'black' } }}
+                                />
+                            </VictoryPortal>
+                        </VictoryGroup>
+                        <VictoryGroup data={reducedDailyWeatherData.night}>
                             <VictoryArea />
                             <VictoryPortal>
                                 <VictoryScatter
