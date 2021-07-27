@@ -15,7 +15,7 @@ interface ForecastProps {
 }
 
 const Forecast: FC<ForecastProps> = (props) => {
-    const { changeTab } = useWeatherContext();
+    const { changeTab, currentTab } = useWeatherContext();
     const { currentGraphTab, changeGraphTab, graphTabs } = props;
     return (
         <div>
@@ -24,6 +24,11 @@ const Forecast: FC<ForecastProps> = (props) => {
                 <div className="tabs-time-format">
                     {' '}
                     <button
+                        className={
+                            currentTab === DEFAULT_TABS.hourly
+                                ? 'selected-tab'
+                                : 'unselected-tab'
+                        }
                         type="button"
                         onClick={() =>
                             changeTab ? changeTab(DEFAULT_TABS.hourly) : false
@@ -32,6 +37,11 @@ const Forecast: FC<ForecastProps> = (props) => {
                         Hourly
                     </button>
                     <button
+                        className={
+                            currentTab === DEFAULT_TABS.daily
+                                ? 'selected-tab'
+                                : 'unselected-tab'
+                        }
                         type="button"
                         onClick={() =>
                             changeTab ? changeTab(DEFAULT_TABS.daily) : false
@@ -43,18 +53,33 @@ const Forecast: FC<ForecastProps> = (props) => {
                 <span className="divider" />
                 <div className="tabs-weather-type">
                     <button
+                        className={
+                            currentGraphTab === graphTabs.temperature
+                                ? 'selected-tab'
+                                : 'unselected-tab'
+                        }
                         type="button"
                         onClick={() => changeGraphTab(graphTabs.temperature)}
                     >
                         {graphTabs.temperature}
                     </button>
                     <button
+                        className={
+                            currentGraphTab === graphTabs.precipitation
+                                ? 'selected-tab'
+                                : 'unselected-tab'
+                        }
                         type="button"
                         onClick={() => changeGraphTab(graphTabs.precipitation)}
                     >
                         {graphTabs.precipitation}
                     </button>{' '}
                     <button
+                        className={
+                            currentGraphTab === graphTabs.wind
+                                ? 'selected-tab'
+                                : 'unselected-tab'
+                        }
                         type="button"
                         onClick={() => changeGraphTab(graphTabs.wind)}
                     >

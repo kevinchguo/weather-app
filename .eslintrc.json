@@ -30,7 +30,7 @@
         "linebreak-style": 0,
         "implicit-arrow-linebreak": ["warn", "beside"],
         "function-paren-newline": ["warn", "multiline-arguments"],
-        "indent": ["error", 4],
+        "indent": ["warn", 4],
         "no-tabs": 0,
         "semi": "error",
         "brace-style": ["error", "1tbs", { "allowSingleLine": true }],

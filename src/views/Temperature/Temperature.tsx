@@ -8,6 +8,9 @@ import {
     VictoryGroup,
     VictoryPortal,
     VictoryScatter,
+    VictoryLegend,
+    VictoryLabel,
+    VictoryTooltip,
 } from 'victory';
 import { DEFAULT_TABS } from '../../constants/constants';
 import { useWeatherContext } from '../../providers/WeatherProvider';
@@ -132,13 +135,151 @@ const Temperature: FC = () => {
             return acc;
         }, dailyWeatherData);
 
-    // const reduceDailyWeatherData = weatherData.daily.reduce((acc, curr) =>
+    const xAxisDaily = weatherData.daily.map((dailyData) => dailyData.dt);
 
     const renderDailyWeather = () => (
         <div>
             <div>
-                <VictoryChart width={900} height={300}>
-                    <VictoryStack
+                <VictoryChart
+                    width={900}
+                    height={300}
+                    maxDomain={{
+                        y: maxHourlyTemp + Math.round(maxHourlyTemp * 0.2),
+                    }}
+                    minDomain={{
+                        y: minHourlyTemp - Math.round(minHourlyTemp * 0.2),
+                    }}
+                    containerComponent={
+                        <VictoryVoronoiContainer
+                            labels={({ datum }) => `${datum.y}°F`}
+                        />
+                    }
+                >
+                    <VictoryLegend
+                        title="Time of day"
+                        colorScale="qualitative"
+                        orientation="horizontal"
+                        x={610}
+                        style={{
+                            border: { stroke: 'black' },
+                            title: { fontSize: 12 },
+                        }}
+                        data={[
+                            { name: 'Night', symbol: { type: 'square' } },
+                            { name: 'Eve', symbol: { type: 'square' } },
+                            { name: 'Day', symbol: { type: 'square' } },
+                            { name: 'Morning', symbol: { type: 'square' } },
+                        ]}
+                        labelComponent={
+                            <VictoryLabel
+                                style={{ fontSize: '8px' }}
+                                textAnchor="start"
+                            />
+                        }
+
+                        // events={[
+                        //     {
+                        //         childName: ['morning', 'day', 'eve', 'night'],
+                        //         target: 'data',
+                        //         eventHandlers: {
+                        //             onMouseOver: () => [
+                        //                 {
+                        //                     childName: ['day'],
+                        //                     mutation: (props) => {
+                        //                         const { fill } = props.style;
+                        //                         return fill === 'tomato'
+                        //                             ? null
+                        //                             : {
+                        //                                   style: {
+                        //                                       fill: 'tomato',
+                        //                                   },
+                        //                               };
+                        //                     },
+                        //                 },
+                        //             ],
+                        //         },
+                        //     },
+                        // ]}
+                    />
+                    <VictoryGroup
+                        colorScale="qualitative"
+                        style={{
+                            data: { strokeWidth: 3, fillOpacity: 0.2 },
+                        }}
+                    >
+                        <VictoryArea
+                            name="morning"
+                            style={{}}
+                            data={reducedDailyWeatherData.morn}
+                            animate={{
+                                onExit: {
+                                    duration: 500,
+                                    before: () => ({
+                                        _y: 0,
+                                        fill: 'orange',
+                                        label: 'BYE',
+                                    }),
+                                },
+                            }}
+                        />
+                        <VictoryArea
+                            name="day"
+                            style={{}}
+                            data={reducedDailyWeatherData.day}
+                            animate={{
+                                onExit: {
+                                    duration: 500,
+                                    before: () => ({
+                                        _y: 0,
+                                        fill: 'orange',
+                                        label: 'BYE',
+                                    }),
+                                },
+                            }}
+                        />
+                        <VictoryArea
+                            name="eve"
+                            style={{}}
+                            data={reducedDailyWeatherData.eve}
+                            animate={{
+                                onExit: {
+                                    duration: 500,
+                                    before: () => ({
+                                        _y: 0,
+                                        fill: 'orange',
+                                        label: 'BYE',
+                                    }),
+                                },
+                            }}
+                        />
+                        <VictoryArea
+                            name="night"
+                            style={{}}
+                            data={reducedDailyWeatherData.night}
+                            animate={{
+                                onExit: {
+                                    duration: 500,
+                                    before: () => ({
+                                        _y: 0,
+                                        fill: 'orange',
+                                        label: 'BYE',
+                                    }),
+                                },
+                            }}
+                        />
+                        <VictoryAxis
+                            crossAxis
+                            tickValues={xAxisDaily}
+                            tickFormat={(t) =>
+                                new Date(t * 1000).toLocaleString('en-US', {
+                                    day: 'numeric',
+                                    month: 'short',
+                                })
+                            }
+                        />
+                        <VictoryAxis dependentAxis crossAxis />
+                    </VictoryGroup>
+                    {/* <VictoryStack
                         animate={{
                             onExit: {
                                 duration: 500,
@@ -155,7 +296,16 @@ const Temperature: FC = () => {
                             <VictoryArea />
                             <VictoryPortal>
                                 <VictoryScatter
-                                    style={{ data: { fill: 'black' } }}
+                                    labels={({ datum }) => `${datum.y}°F`}
+                                    style={{
+                                        data: {
+                                            fill: 'black',
+                                        },
+                                        labels: {
+                                            fontSize: '8px',
+                                            fill: 'black',
+                                        },
+                                    }}
                                 />
                             </VictoryPortal>
                         </VictoryGroup>
@@ -163,7 +313,16 @@ const Temperature: FC = () => {
                             <VictoryArea />
                             <VictoryPortal>
                                 <VictoryScatter
-                                    style={{ data: { fill: 'black' } }}
+                                    labels={({ datum }) => `${datum.y}°F`}
+                                    style={{
+                                        data: {
+                                            fill: 'black',
+                                        },
+                                        labels: {
+                                            fontSize: '8px',
+                                            fill: 'black',
+                                        },
+                                    }}
                                 />
                             </VictoryPortal>
                         </VictoryGroup>
@@ -171,7 +330,16 @@ const Temperature: FC = () => {
                             <VictoryArea />
                             <VictoryPortal>
                                 <VictoryScatter
-                                    style={{ data: { fill: 'black' } }}
+                                    labels={({ datum }) => `${datum.y}°F`}
+                                    style={{
+                                        data: {
+                                            fill: 'black',
+                                        },
+                                        labels: {
+                                            fontSize: '8px',
+                                            fill: 'black',
+                                        },
+                                    }}
                                 />
                             </VictoryPortal>
                         </VictoryGroup>
@@ -179,11 +347,30 @@ const Temperature: FC = () => {
                             <VictoryArea />
                             <VictoryPortal>
                                 <VictoryScatter
-                                    style={{ data: { fill: 'black' } }}
+                                    labels={({ datum }) => `${datum.y}°F`}
+                                    style={{
+                                        data: {
+                                            fill: 'black',
+                                        },
+                                        labels: {
+                                            fontSize: '8px',
+                                            fill: 'black',
+                                        },
+                                    }}
                                 />
                             </VictoryPortal>
                         </VictoryGroup>
-                    </VictoryStack>
+                        <VictoryAxis
+                            crossAxis
+                            tickValues={xAxisDaily}
+                            tickFormat={(t) =>
+                                new Date(t * 1000).toLocaleString('en-US', {
+                                    day: 'numeric',
+                                    month: 'short',
+                                })
+                            }
+                        />
+                    </VictoryStack> */}
                 </VictoryChart>
             </div>
             {/* {weatherData.daily.map((dailyWeather) => (
