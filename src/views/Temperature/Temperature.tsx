@@ -11,6 +11,9 @@ import {
     VictoryLegend,
     VictoryLabel,
     VictoryTooltip,
+    createContainer,
+    VictoryVoronoiContainerProps,
+    VictoryZoomContainerProps,
 } from 'victory';
 import { DEFAULT_TABS } from '../../constants/constants';
 import { useWeatherContext } from '../../providers/WeatherProvider';
@@ -47,18 +50,24 @@ const Temperature: FC = () => {
                 x: hourlyWeather.dt,
                 y: Math.round(hourlyWeather.temp),
             }))
-            .filter((curr, i) => i % 3 === 0);
+            .filter((curr, i) => i);
 
     const xAxisHourly = weatherData.hourly
         .map((hourlyData) => hourlyData.dt)
-        .filter((curr, i) => i % 3 === 0);
+        .filter((curr, i) => i);
+
+    const VictoryZoomVoronoiContainer = createContainer<
+        VictoryZoomContainerProps,
+        VictoryVoronoiContainerProps
+    >('zoom', 'voronoi');
 
     const renderHourlyWeather = () => (
         <div className="temperature">
             <div className="hourly-temp-chart">
                 <VictoryChart
-                    width={900}
-                    height={300}
+                    width={1000}
+                    height={400}
+                    scale={{ x: 'time' }}
                     maxDomain={{
                         y: maxHourlyTemp + 1,
                     }}
@@ -66,7 +75,10 @@ const Temperature: FC = () => {
                         y: minHourlyTemp - 1,
                     }}
                     containerComponent={
-                        <VictoryVoronoiContainer
+                        <VictoryZoomVoronoiContainer
+                            zoomDomain={{
+                                y: [minHourlyTemp + 1, maxHourlyTemp + 1],
+                            }}
                             labels={({ datum }) =>
                                 `${datum.y}°F @ ${new Date(
                                     datum.x * 1000
@@ -97,13 +109,22 @@ const Temperature: FC = () => {
                     <VictoryAxis
                         crossAxis
                         tickValues={xAxisHourly}
+                        style={{ tickLabels: { fontSize: 8 } }}
+                        tickLabelComponent={
+                            <VictoryLabel angle={-45} textAnchor="end" />
+                        }
                         tickFormat={(t) =>
                             new Date(t * 1000).toLocaleString('en-US', {
                                 hour: 'numeric',
+                                weekday: 'short',
                             })
                         }
                     />
-                    <VictoryAxis dependentAxis crossAxis />
+                    <VictoryAxis
+                        dependentAxis
+                        crossAxis
+                        tickFormat={(t) => `${t}°F`}
+                    />
                 </VictoryChart>
             </div>
         </div>
@@ -135,19 +156,43 @@ const Temperature: FC = () => {
             return acc;
         }, dailyWeatherData);
 
+    const maxDailyTemp: number = weatherData.daily.reduce(
+        (acc, tempAtTime) =>
+            Math.max(
+                acc,
+                Math.round(tempAtTime.temp.morn),
+                Math.round(tempAtTime.temp.day),
+                Math.round(tempAtTime.temp.eve),
+                Math.round(tempAtTime.temp.night)
+            ),
+        -Infinity
+    );
+
+    const minDailyTemp: number = weatherData.daily.reduce(
+        (acc, tempAtTime) =>
+            Math.min(
+                acc,
+                Math.round(tempAtTime.temp.morn),
+                Math.round(tempAtTime.temp.day),
+                Math.round(tempAtTime.temp.eve),
+                Math.round(tempAtTime.temp.night)
+            ),
+        Infinity
+    );
+
     const xAxisDaily = weatherData.daily.map((dailyData) => dailyData.dt);
 
     const renderDailyWeather = () => (
         <div>
             <div>
                 <VictoryChart
-                    width={900}
-                    height={300}
+                    width={1000}
+                    height={400}
                     maxDomain={{
-                        y: maxHourlyTemp + Math.round(maxHourlyTemp * 0.2),
+                        y: maxDailyTemp + 1,
                     }}
                     minDomain={{
-                        y: minHourlyTemp - Math.round(minHourlyTemp * 0.2),
+                        y: minDailyTemp - 1,
                     }}
                     containerComponent={
                         <VictoryVoronoiContainer
@@ -159,7 +204,7 @@ const Temperature: FC = () => {
                         title="Time of day"
                         colorScale="qualitative"
                         orientation="horizontal"
-                        x={610}
+                        x={710}
                         style={{
                             border: { stroke: 'black' },
                             title: { fontSize: 12 },
@@ -217,7 +262,6 @@ const Temperature: FC = () => {
                                     before: () => ({
                                         _y: 0,
                                         fill: 'orange',
-                                        label: 'BYE',
                                     }),
                                 },
                             }}
@@ -232,7 +276,6 @@ const Temperature: FC = () => {
                                     before: () => ({
                                         _y: 0,
                                         fill: 'orange',
-                                        label: 'BYE',
                                     }),
                                 },
                             }}
@@ -247,7 +290,6 @@ const Temperature: FC = () => {
                                     before: () => ({
                                         _y: 0,
                                         fill: 'orange',
-                                        label: 'BYE',
                                     }),
                                 },
                             }}
@@ -262,7 +304,6 @@ const Temperature: FC = () => {
                                     before: () => ({
                                         _y: 0,
                                         fill: 'orange',
-                                        label: 'BYE',
                                     }),
                                 },
                             }}
