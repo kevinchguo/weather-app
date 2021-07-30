@@ -1,5 +1,5 @@
 import { GraphTabs, Tabs } from '../types/tabs';
-import { OneCallWeatherAPI } from '../types/weather';
+import { Directions, OneCallWeatherAPI } from '../types/weather';
 
 export const DEFAULT_GRAPH_TABS: GraphTabs = {
     temperature: 'Temperature',
@@ -1488,4 +1488,15 @@ export const DEFAULT_WEATHER_STATE: OneCallWeatherAPI = {
             tags: [],
         },
     ],
+};
+
+export const DIRECTIONS: Directions = {
+    0: 'E',
+    45: 'NE',
+    90: 'N',
+    135: 'NW',
+    180: 'W',
+    225: 'SW',
+    270: 'S',
+    315: 'SE',
 };

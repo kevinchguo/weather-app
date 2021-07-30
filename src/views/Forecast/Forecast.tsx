@@ -87,9 +87,13 @@ const Forecast: FC<ForecastProps> = (props) => {
                     </button>
                 </div>
             </div>
-            {currentGraphTab === graphTabs.temperature && <Temperature />}
-            {currentGraphTab === graphTabs.precipitation && <Precipitation />}
-            {currentGraphTab === graphTabs.wind && <Wind />}
+            <div className="graphs">
+                {currentGraphTab === graphTabs.temperature && <Temperature />}
+                {currentGraphTab === graphTabs.precipitation && (
+                    <Precipitation />
+                )}
+                {currentGraphTab === graphTabs.wind && <Wind />}
+            </div>
         </div>
     );
 };

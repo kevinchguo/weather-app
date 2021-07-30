@@ -129,3 +129,14 @@ export interface Coords {
 export interface ForecastTypeProps {
     forecast: HourlyWeather[] | DailyWeather[];
 }
+
+export interface Directions {
+    0: string;
+    45: string;
+    90: string;
+    135: string;
+    180: string;
+    225: string;
+    270: string;
+    315: string;
+}

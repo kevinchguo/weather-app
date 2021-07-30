@@ -4,13 +4,9 @@ import {
     VictoryArea,
     VictoryVoronoiContainer,
     VictoryAxis,
-    VictoryStack,
     VictoryGroup,
-    VictoryPortal,
-    VictoryScatter,
     VictoryLegend,
     VictoryLabel,
-    VictoryTooltip,
     createContainer,
     VictoryVoronoiContainerProps,
     VictoryZoomContainerProps,
@@ -66,7 +62,7 @@ const Temperature: FC = () => {
             <div className="hourly-temp-chart">
                 <VictoryChart
                     width={1000}
-                    height={400}
+                    height={290}
                     scale={{ x: 'time' }}
                     maxDomain={{
                         y: maxHourlyTemp + 1,
@@ -121,6 +117,7 @@ const Temperature: FC = () => {
                         }
                     />
                     <VictoryAxis
+                        style={{ tickLabels: { fontSize: 8 } }}
                         dependentAxis
                         crossAxis
                         tickFormat={(t) => `${t}°F`}
@@ -187,7 +184,7 @@ const Temperature: FC = () => {
             <div>
                 <VictoryChart
                     width={1000}
-                    height={400}
+                    height={300}
                     maxDomain={{
                         y: maxDailyTemp + 1,
                     }}
@@ -310,148 +307,23 @@ const Temperature: FC = () => {
                         />
                         <VictoryAxis
                             crossAxis
+                            style={{ tickLabels: { fontSize: 8 } }}
                             tickValues={xAxisDaily}
                             tickFormat={(t) =>
                                 new Date(t * 1000).toLocaleString('en-US', {
                                     day: 'numeric',
-                                    month: 'short',
+                                    month: 'numeric',
                                 })
                             }
                         />
-                        <VictoryAxis dependentAxis crossAxis />
-                    </VictoryGroup>
-                    {/* <VictoryStack
-                        animate={{
-                            onExit: {
-                                duration: 500,
-                                before: () => ({
-                                    _y: 0,
-                                    fill: 'orange',
-                                    label: 'BYE',
-                                }),
-                            },
-                        }}
-                        colorScale="cool"
-                    >
-                        <VictoryGroup data={reducedDailyWeatherData.morn}>
-                            <VictoryArea />
-                            <VictoryPortal>
-                                <VictoryScatter
-                                    labels={({ datum }) => `${datum.y}°F`}
-                                    style={{
-                                        data: {
-                                            fill: 'black',
-                                        },
-                                        labels: {
-                                            fontSize: '8px',
-                                            fill: 'black',
-                                        },
-                                    }}
-                                />
-                            </VictoryPortal>
-                        </VictoryGroup>
-                        <VictoryGroup data={reducedDailyWeatherData.day}>
-                            <VictoryArea />
-                            <VictoryPortal>
-                                <VictoryScatter
-                                    labels={({ datum }) => `${datum.y}°F`}
-                                    style={{
-                                        data: {
-                                            fill: 'black',
-                                        },
-                                        labels: {
-                                            fontSize: '8px',
-                                            fill: 'black',
-                                        },
-                                    }}
-                                />
-                            </VictoryPortal>
-                        </VictoryGroup>
-                        <VictoryGroup data={reducedDailyWeatherData.eve}>
-                            <VictoryArea />
-                            <VictoryPortal>
-                                <VictoryScatter
-                                    labels={({ datum }) => `${datum.y}°F`}
-                                    style={{
-                                        data: {
-                                            fill: 'black',
-                                        },
-                                        labels: {
-                                            fontSize: '8px',
-                                            fill: 'black',
-                                        },
-                                    }}
-                                />
-                            </VictoryPortal>
-                        </VictoryGroup>
-                        <VictoryGroup data={reducedDailyWeatherData.night}>
-                            <VictoryArea />
-                            <VictoryPortal>
-                                <VictoryScatter
-                                    labels={({ datum }) => `${datum.y}°F`}
-                                    style={{
-                                        data: {
-                                            fill: 'black',
-                                        },
-                                        labels: {
-                                            fontSize: '8px',
-                                            fill: 'black',
-                                        },
-                                    }}
-                                />
-                            </VictoryPortal>
-                        </VictoryGroup>
                         <VictoryAxis
+                            dependentAxis
                             crossAxis
-                            tickValues={xAxisDaily}
-                            tickFormat={(t) =>
-                                new Date(t * 1000).toLocaleString('en-US', {
-                                    day: 'numeric',
-                                    month: 'short',
-                                })
-                            }
+                            style={{ tickLabels: { fontSize: 8 } }}
                         />
-                    </VictoryStack> */}
+                    </VictoryGroup>
                 </VictoryChart>
             </div>
-            {/* {weatherData.daily.map((dailyWeather) => (
-                <>
-                    <p>
-                        Time:{' '}
-                        {new Date(dailyWeather.dt * 1000).toLocaleString(
-                            'en-US',
-                            { timeZoneName: 'short' }
-                        )}
-                    </p>
-                    {dailyWeather.weather.map((condition) => (
-                        <>
-                            <p>
-                                <img
-                                    src={`https://openweathermap.org/img/wn/${condition.icon}@2x.png`}
-                                    alt={condition.icon}
-                                />
-                            </p>
-                            <p>Description: {condition.description}</p>
-                        </>
-                    ))}
-                    <p>
-                        Day: {dailyWeather.temp.day}/
-                        {dailyWeather.feels_like.day}
-                    </p>
-                    <p>
-                        Eve: {dailyWeather.temp.eve}/
-                        {dailyWeather.feels_like.eve}
-                    </p>
-                    <p>
-                        Morning: {dailyWeather.temp.morn}/
-                        {dailyWeather.feels_like.morn}
-                    </p>
-                    <p>
-                        Night: {dailyWeather.temp.night}/
-                        {dailyWeather.feels_like.night}
-                    </p>
-                </>
-            ))} */}
         </div>
     );
 

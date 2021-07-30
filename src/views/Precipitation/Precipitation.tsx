@@ -109,7 +109,7 @@ const Precipitation: FC = () => {
         <div>
             <VictoryChart
                 width={1000}
-                height={400}
+                height={290}
                 domain={{ y: [0, 100] }}
                 containerComponent={
                     <VictoryVoronoiContainer
@@ -186,6 +186,7 @@ const Precipitation: FC = () => {
                 <VictoryAxis
                     dependentAxis
                     crossAxis
+                    style={{ tickLabels: { fontSize: 8 } }}
                     tickFormat={(t) => `${t}%`}
                 />
             </VictoryChart>
