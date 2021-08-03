@@ -26,11 +26,23 @@ interface BarColors {
     highlight: string;
 }
 
+interface InnerCircle {
+    stroke: string;
+    strokeWidth: number;
+    fill: string;
+}
+
 const orange: BarColors = { base: 'gold', highlight: 'darkOrange' };
 
 const red: BarColors = { base: 'tomato', highlight: 'orangeRed' };
 
-const innerRadius = 30;
+const circleStyle: InnerCircle = {
+    stroke: red.base,
+    strokeWidth: 2,
+    fill: orange.base,
+};
+
+const innerRadius = 15;
 
 // const CompassCenter: FC = () => {
 //     const { origin } = props;
@@ -127,63 +139,28 @@ const Wind: FC = () => {
                 {/* <p>{weatherType.windSpeed[sliderValue]}</p>
                 <p>{weatherType.windGust[sliderValue]}</p>
                 <p>{weatherType.windDeg[sliderValue]}</p> */}
-                <VictoryChart
-                    polar
-                    width={900}
-                    height={260}
-                    animate={{ duration: 500, onLoad: { duration: 500 } }}
-                >
+                <VictoryChart polar width={900} height={250}>
                     <VictoryPolarAxis
                         dependentAxis
-                        labelPlacement="vertical"
-                        style={{ axis: { stroke: 'none' } }}
-                        tickFormat={() => ''}
+                        style={{
+                            tickLabels: { fontSize: '8px' },
+                            axis: { stroke: 'none' },
+                        }}
+                        labelPlacement="parallel"
+                        axisAngle={weatherType.windDeg[sliderValue]}
+                        tickFormat={(t) => `${Math.round(t)}mph`}
+                        minDomain={weatherType.windSpeed[sliderValue]}
+                        maxDomain={100}
+                        tickValues={[
+                            weatherType.windSpeed[sliderValue],
+                            weatherType.windGust[sliderValue],
+                        ]}
                     />
                     <VictoryPolarAxis
                         labelPlacement="vertical"
                         tickValues={_.keys(DIRECTIONS).map((k) => +k)}
                         tickFormat={_.values(DIRECTIONS)}
                     />
-
-                    {/* <VictoryGroup>
-                        <VictoryBar
-                            style={{
-                                data: {
-                                    fill: () => orange.highlight,
-                                    width: 40,
-                                },
-                            }}
-                            data={[
-                                {
-                                    x: weatherType.windDeg[sliderValue],
-                                    y: weatherType.windSpeed[sliderValue],
-                                },
-                            ]}
-                            x="windDeg"
-                            y="windSpeed"
-                            labels={() => ''}
-                            // labelComponent={<CenterLabel color={orange} />}
-                        />
-                        <VictoryBar
-                            style={{
-                                data: {
-                                    fill: () => red.highlight,
-                                    width: 40,
-                                },
-                            }}
-                            data={[
-                                {
-                                    x: weatherType.windDeg[sliderValue],
-                                    y: weatherType.windSpeed[sliderValue],
-                                },
-                            ]}
-                            x="windDeg"
-                            y={(d) => d.windGust - d.windSpeed}
-                            labels={() => ''}
-                            // labelComponent={<CenterLabel color={red} />}
-                        />
-                    </VictoryGroup> */}
-                    {/* <CompassCenter /> */}
                 </VictoryChart>
             </div>
             <div className="slider-container">
