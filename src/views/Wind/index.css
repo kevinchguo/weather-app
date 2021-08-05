@@ -2,8 +2,16 @@
     width: 100%;
 }
 
-.time {
-    margin: 5px;
+.wind-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 50vh;
+    width: 30%;
+    align-items: flex-start;
+}
+.info {
+    margin: 15px 0 15px 0;
 }
 
 #time-slider {
@@ -35,4 +43,11 @@
     height: 25px;
     background: #04aa6d;
     cursor: pointer;
+}
+
+.wind-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 50vh;
 }

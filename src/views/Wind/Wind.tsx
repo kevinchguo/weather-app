@@ -21,69 +21,6 @@ interface WindDataChart {
     windDeg: number[];
 }
 
-interface BarColors {
-    base: string;
-    highlight: string;
-}
-
-interface InnerCircle {
-    stroke: string;
-    strokeWidth: number;
-    fill: string;
-}
-
-const orange: BarColors = { base: 'gold', highlight: 'darkOrange' };
-
-const red: BarColors = { base: 'tomato', highlight: 'orangeRed' };
-
-const circleStyle: InnerCircle = {
-    stroke: red.base,
-    strokeWidth: 2,
-    fill: orange.base,
-};
-
-const innerRadius = 15;
-
-// const CompassCenter: FC = () => {
-//     const { origin } = props;
-//     const circleStyle = {
-//         stroke: red.base,
-//         strokeWidth: 2,
-//         fill: orange.base,
-//     };
-//     return (
-//         <g>
-//             <circle
-//                 cx={origin.x}
-//                 cy={origin.y}
-//                 r={innerRadius}
-//                 style={circleStyle}
-//             />
-//         </g>
-//     );
-// };
-
-// const CenterLabel: FC = (props) => {
-//     const { datum, color } = props;
-//     // eslint-disable-next-line no-underscore-dangle
-//     const text = [`${Math.round(datum._y1)} m/s`];
-//     const baseStyle = { fill: color.highlight, textAnchor: 'middle' };
-//     const style = [
-//         { ...baseStyle, fontSize: 18, fontWeight: 'bold' },
-//         { ...baseStyle, fontSize: 12 },
-//     ];
-
-//     return (
-//         <VictoryLabel
-//             text={text}
-//             style={style}
-//             x={175}
-//             y={175}
-//             renderInPortal
-//         />
-//     );
-// };
-
 const Wind: FC = () => {
     const { weatherData, currentTab } = useWeatherContext();
     const [currentTime, setCurrentTime] = useState<number>(0);
@@ -128,40 +65,45 @@ const Wind: FC = () => {
     const renderWeatherType = (weatherType: WindDataChart) => (
         <div>
             <div className="wind-details">
-                <div className="time">
-                    {new Date(
-                        weatherType.time[sliderValue] * 1000
-                    ).toLocaleString('en-US', {
-                        hour: 'numeric',
-                        weekday: 'short',
-                    })}
+                <div className="compass">
+                    <VictoryChart polar>
+                        <VictoryPolarAxis
+                            dependentAxis
+                            style={{
+                                tickLabels: { fontSize: '8px' },
+                            }}
+                            labelPlacement="perpendicular"
+                            axisAngle={weatherType.windDeg[sliderValue]}
+                            tickFormat={(t) => `${t}`}
+                            tickValues={['', '^']}
+                            tickLabelComponent={
+                                <VictoryLabel style={[{ fontSize: '15px' }]} />
+                            }
+                        />
+                        <VictoryPolarAxis
+                            labelPlacement="vertical"
+                            style={{
+                                tickLabels: { fontSize: '10px' },
+                            }}
+                            tickValues={_.keys(DIRECTIONS).map((k) => +k)}
+                            tickFormat={_.values(DIRECTIONS)}
+                        />
+                    </VictoryChart>
                 </div>
-                {/* <p>{weatherType.windSpeed[sliderValue]}</p>
-                <p>{weatherType.windGust[sliderValue]}</p>
-                <p>{weatherType.windDeg[sliderValue]}</p> */}
-                <VictoryChart polar width={900} height={250}>
-                    <VictoryPolarAxis
-                        dependentAxis
-                        style={{
-                            tickLabels: { fontSize: '8px' },
-                            axis: { stroke: 'none' },
-                        }}
-                        labelPlacement="parallel"
-                        axisAngle={weatherType.windDeg[sliderValue]}
-                        tickFormat={(t) => `${Math.round(t)}mph`}
-                        minDomain={weatherType.windSpeed[sliderValue]}
-                        maxDomain={100}
-                        tickValues={[
-                            weatherType.windSpeed[sliderValue],
-                            weatherType.windGust[sliderValue],
-                        ]}
-                    />
-                    <VictoryPolarAxis
-                        labelPlacement="vertical"
-                        tickValues={_.keys(DIRECTIONS).map((k) => +k)}
-                        tickFormat={_.values(DIRECTIONS)}
-                    />
-                </VictoryChart>
+                <div className="wind-info">
+                    <p className="info">
+                        {'Date: '}
+                        {new Date(
+                            weatherType.time[sliderValue] * 1000
+                        ).toLocaleString('en-US', {
+                            hour: 'numeric',
+                            weekday: 'short',
+                        })}
+                    </p>
+                    <p className="info">{`Wind speed: ${weatherType.windSpeed[sliderValue]} mph`}</p>
+                    <p className="info">{`Wind gust: ${weatherType.windGust[sliderValue]} mph`}</p>
+                    <p className="info">{`Wind degrees: ${weatherType.windDeg[sliderValue]}°`}</p>
+                </div>
             </div>
             <div className="slider-container">
                 <input
