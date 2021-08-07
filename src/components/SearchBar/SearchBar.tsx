@@ -8,7 +8,7 @@ const SearchBar: React.FC = () => {
     return (
         <div className="navbar">
             <label htmlFor="searchBar" className="search-bar">
-                <p>Search a city</p>
+                <p className="search">Search a city</p>
                 <input
                     id="searchBar"
                     type="text"
@@ -19,7 +19,11 @@ const SearchBar: React.FC = () => {
                             : false
                     }
                 />
-                <button type="button" onClick={fetchSearchInputWeather}>
+                <button
+                    className="search-button"
+                    type="button"
+                    onClick={fetchSearchInputWeather}
+                >
                     search
                 </button>
             </label>

@@ -2,6 +2,12 @@ import { FC } from 'react';
 import { useWeatherContext } from '../../providers/WeatherProvider';
 import './index.css';
 
+// const Map: FC = () => {
+// 	return (
+
+// 	)
+// }
+
 const TodaysWeather: FC = () => {
     const { weatherData, currentCity } = useWeatherContext();
     return (
@@ -58,6 +64,7 @@ const TodaysWeather: FC = () => {
                     </p>
                 </div>
             </div>
+            <div className="map">map here</div>
         </div>
     );
 };

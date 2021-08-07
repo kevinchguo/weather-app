@@ -5,6 +5,7 @@ body {
         'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-weight: 300;
 }
 
 code {
@@ -14,4 +15,11 @@ code {
 
 p {
     margin: 4px;
+}
+
+input {
+    height: 29.5px;
+    border-radius: 8px;
+}
+input:focus-visible {
 }

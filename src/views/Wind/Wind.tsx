@@ -92,7 +92,7 @@ const Wind: FC = () => {
                 </div>
                 <div className="wind-info">
                     <p className="info">
-                        {'Date: '}
+                        <span className="span-text">Date: </span>
                         {new Date(
                             weatherType.time[sliderValue] * 1000
                         ).toLocaleString('en-US', {
@@ -100,9 +100,18 @@ const Wind: FC = () => {
                             weekday: 'short',
                         })}
                     </p>
-                    <p className="info">{`Wind speed: ${weatherType.windSpeed[sliderValue]} mph`}</p>
-                    <p className="info">{`Wind gust: ${weatherType.windGust[sliderValue]} mph`}</p>
-                    <p className="info">{`Wind degrees: ${weatherType.windDeg[sliderValue]}°`}</p>
+                    <p className="info">
+                        <span className="span-text">Wind speed: </span>
+                        {` ${weatherType.windSpeed[sliderValue]} mph`}
+                    </p>
+                    <p className="info">
+                        <span className="span-text">Wind gust: </span>
+                        {`${weatherType.windGust[sliderValue]} mph`}
+                    </p>
+                    <p className="info">
+                        <span className="span-text">Wind degrees: </span>
+                        {`${weatherType.windDeg[sliderValue]}°`}
+                    </p>
                 </div>
             </div>
             <div className="slider-container">
