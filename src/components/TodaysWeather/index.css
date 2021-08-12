@@ -1,7 +1,7 @@
 .todays-weather {
     display: flex;
     align-items: flex-start;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .location-details {
@@ -27,6 +27,11 @@
 .temperature-container {
     display: flex;
     flex-direction: row;
+    align-items: center;
+}
+
+.weather-icon {
+    height: 20vh;
 }
 
 .weather-info {
@@ -36,5 +41,9 @@
 }
 
 .temperature {
-    font-size: 3rem;
+    font-size: 20vh;
+}
+
+.left-container {
+    margin: 15px;
 }

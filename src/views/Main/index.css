@@ -7,3 +7,9 @@
     overflow-y: auto;
     padding: 1em;
 }
+
+.horizontal-divider {
+    border-bottom: 1px solid black;
+    width: 100%;
+    margin: 15px;
+}

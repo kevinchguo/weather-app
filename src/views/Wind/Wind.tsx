@@ -1,16 +1,8 @@
-import { FC, ReactNode, useContext, useState } from 'react';
-import {
-    VictoryBar,
-    VictoryChart,
-    VictoryGroup,
-    VictoryLabel,
-    VictoryPolarAxis,
-    VictoryStack,
-} from 'victory';
+import { FC, useState } from 'react';
+import { VictoryChart, VictoryLabel, VictoryPolarAxis } from 'victory';
 import _ from 'lodash';
-import { DEFAULT_TABS } from '../../constants/constants';
+import { DEFAULT_TABS, DIRECTIONS } from '../../constants/constants';
 import { useWeatherContext } from '../../providers/WeatherProvider';
-import { DIRECTIONS } from '../../constants/constants';
 
 import './index.css';
 
@@ -23,7 +15,6 @@ interface WindDataChart {
 
 const Wind: FC = () => {
     const { weatherData, currentTab } = useWeatherContext();
-    const [currentTime, setCurrentTime] = useState<number>(0);
     const [sliderValue, setSliderValue] = useState<number>(0);
 
     const handleSliderValue = (e: any) => {

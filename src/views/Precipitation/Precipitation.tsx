@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import {
-    VictoryArea,
     VictoryAxis,
     VictoryBar,
     VictoryChart,
@@ -11,7 +10,6 @@ import {
 } from 'victory';
 import { DEFAULT_TABS } from '../../constants/constants';
 import { useWeatherContext } from '../../providers/WeatherProvider';
-import { DailyWeather, HourlyWeather } from '../../types/weather';
 
 interface ChartData {
     x: number;

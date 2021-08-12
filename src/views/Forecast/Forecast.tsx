@@ -31,6 +31,7 @@ const Forecast: FC<ForecastProps> = (props) => {
                         }
                         type="button"
                         onClick={() =>
+                            // eslint-disable-next-line implicit-arrow-linebreak
                             changeTab ? changeTab(DEFAULT_TABS.hourly) : false
                         }
                     >
@@ -44,6 +45,7 @@ const Forecast: FC<ForecastProps> = (props) => {
                         }
                         type="button"
                         onClick={() =>
+                            // eslint-disable-next-line implicit-arrow-linebreak
                             changeTab ? changeTab(DEFAULT_TABS.daily) : false
                         }
                     >
