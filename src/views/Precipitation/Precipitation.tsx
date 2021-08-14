@@ -107,7 +107,7 @@ const Precipitation: FC = () => {
         <div>
             <VictoryChart
                 width={1000}
-                height={290}
+                height={450}
                 domain={{ y: [0, 100] }}
                 containerComponent={
                     <VictoryVoronoiContainer

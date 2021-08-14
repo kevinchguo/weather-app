@@ -62,7 +62,7 @@ const Temperature: FC = () => {
             <div className="hourly-temp-chart">
                 <VictoryChart
                     width={1000}
-                    height={290}
+                    height={430}
                     scale={{ x: 'time' }}
                     maxDomain={{
                         y: maxHourlyTemp + 1,
@@ -184,7 +184,7 @@ const Temperature: FC = () => {
             <div>
                 <VictoryChart
                     width={1000}
-                    height={300}
+                    height={450}
                     maxDomain={{
                         y: maxDailyTemp + 1,
                     }}

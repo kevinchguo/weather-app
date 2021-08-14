@@ -18,7 +18,7 @@ const Forecast: FC<ForecastProps> = (props) => {
     const { changeTab, currentTab } = useWeatherContext();
     const { currentGraphTab, changeGraphTab, graphTabs } = props;
     return (
-        <div>
+        <div className="details-container">
             <div className="tabs">
                 {' '}
                 <div className="tabs-time-format">

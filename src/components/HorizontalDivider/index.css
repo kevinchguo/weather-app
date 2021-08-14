@@ -1,12 +1,13 @@
 .container {
     display: flex;
     align-items: center;
-    margin: 15px;
+    justify-content: center;
+    margin: 70px 0 70px 0;
 }
 
 .border {
     border-bottom: 1px solid black;
-    width: 100%;
+    width: 30%;
 }
 
 .content {

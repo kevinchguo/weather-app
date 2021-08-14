@@ -1,3 +1,9 @@
+.details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .tabs {
     display: flex;
 }
@@ -29,4 +35,6 @@
 }
 
 .graphs {
+    height: 85vh;
+    width: 90vw;
 }

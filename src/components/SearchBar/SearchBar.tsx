@@ -24,7 +24,7 @@ const SearchBar: React.FC = () => {
                     type="button"
                     onClick={fetchSearchInputWeather}
                 >
-                    search
+                    Search
                 </button>
             </label>
         </div>
