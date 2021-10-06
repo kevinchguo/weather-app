@@ -6,11 +6,15 @@
 
 .tabs {
     display: flex;
+    margin: 2em;
 }
 .tabs-time-format,
 .tabs-weather-type {
     display: flex;
     gap: 5px;
+}
+.graphs {
+    margin-left: 20px;
 }
 
 .divider {
@@ -34,7 +38,9 @@
     background: 'none';
 }
 
-.graphs {
-    height: 85vh;
-    width: 90vw;
+.weather-content {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin: 3em;
 }

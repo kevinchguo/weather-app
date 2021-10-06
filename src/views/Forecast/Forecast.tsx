@@ -7,6 +7,7 @@ import { useWeatherContext } from '../../providers/WeatherProvider';
 import { DEFAULT_TABS } from '../../constants/constants';
 
 import './index.css';
+import TodaysWeather from '../../components/TodaysWeather';
 
 interface ForecastProps {
     currentGraphTab: string;
@@ -89,12 +90,17 @@ const Forecast: FC<ForecastProps> = (props) => {
                     </button>
                 </div>
             </div>
-            <div className="graphs">
-                {currentGraphTab === graphTabs.temperature && <Temperature />}
-                {currentGraphTab === graphTabs.precipitation && (
-                    <Precipitation />
-                )}
-                {currentGraphTab === graphTabs.wind && <Wind />}
+            <div className="weather-content">
+                <TodaysWeather />
+                <div className="graphs">
+                    {currentGraphTab === graphTabs.temperature && (
+                        <Temperature />
+                    )}
+                    {currentGraphTab === graphTabs.precipitation && (
+                        <Precipitation />
+                    )}
+                    {currentGraphTab === graphTabs.wind && <Wind />}
+                </div>
             </div>
         </div>
     );

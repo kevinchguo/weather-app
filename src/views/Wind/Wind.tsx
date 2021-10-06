@@ -1,7 +1,11 @@
 import { FC, useState } from 'react';
 import { VictoryChart, VictoryLabel, VictoryPolarAxis } from 'victory';
 import _ from 'lodash';
-import { DEFAULT_TABS, DIRECTIONS } from '../../constants/constants';
+import {
+    DEFAULT_TABS,
+    DIRECTIONS,
+    GRAPH_SIZE,
+} from '../../constants/constants';
 import { useWeatherContext } from '../../providers/WeatherProvider';
 
 import './index.css';
@@ -54,15 +58,16 @@ const Wind: FC = () => {
     const dailyWindData: WindDataChart = reduceWeatherData(weatherData.daily);
 
     const renderWeatherType = (weatherType: WindDataChart) => (
-        <div>
+        <>
             <div className="wind-details">
                 <div className="compass">
-                    <VictoryChart polar>
+                    <VictoryChart
+                        width={GRAPH_SIZE.width}
+                        height={GRAPH_SIZE.height}
+                        polar
+                    >
                         <VictoryPolarAxis
                             dependentAxis
-                            style={{
-                                tickLabels: { fontSize: '8px' },
-                            }}
                             labelPlacement="perpendicular"
                             axisAngle={weatherType.windDeg[sliderValue]}
                             tickFormat={(t) => `${t}`}
@@ -73,9 +78,6 @@ const Wind: FC = () => {
                         />
                         <VictoryPolarAxis
                             labelPlacement="vertical"
-                            style={{
-                                tickLabels: { fontSize: '10px' },
-                            }}
                             tickValues={_.keys(DIRECTIONS).map((k) => +k)}
                             tickFormat={_.values(DIRECTIONS)}
                         />
@@ -93,11 +95,13 @@ const Wind: FC = () => {
                     </p>
                     <p className="info">
                         <span className="span-text">Wind speed: </span>
-                        {` ${weatherType.windSpeed[sliderValue]} mph`}
+                        {` ${Math.round(
+                            weatherType.windSpeed[sliderValue]
+                        )} mph`}
                     </p>
                     <p className="info">
                         <span className="span-text">Wind gust: </span>
-                        {`${weatherType.windGust[sliderValue]} mph`}
+                        {`${Math.round(weatherType.windGust[sliderValue])} mph`}
                     </p>
                     <p className="info">
                         <span className="span-text">Wind degrees: </span>
@@ -117,7 +121,7 @@ const Wind: FC = () => {
                     onKeyDown={(e) => handleKeyPressSliderValue(e)}
                 />
             </div>
-        </div>
+        </>
     );
 
     return (

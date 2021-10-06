@@ -1,5 +1,6 @@
 import { GraphTabs, Tabs } from '../types/tabs';
 import { Directions, OneCallWeatherAPI } from '../types/weather';
+import { GraphSize, GraphZoom } from '../types/graph';
 
 export const DEFAULT_GRAPH_TABS: GraphTabs = {
     temperature: 'Temperature',
@@ -1499,4 +1500,15 @@ export const DIRECTIONS: Directions = {
     225: 'SW',
     270: 'S',
     315: 'SE',
+};
+
+export const GRAPH_SIZE: GraphSize = {
+    width: 1000,
+    height: 600,
+    legendx: 715,
+    legendy: 20,
+};
+
+export const GRAPH_ZOOM: GraphZoom = {
+    x: [0, 0],
 };

@@ -10,8 +10,14 @@ import {
     createContainer,
     VictoryVoronoiContainerProps,
     VictoryZoomContainerProps,
+    VictoryZoomContainer,
+    VictoryTooltip,
 } from 'victory';
-import { DEFAULT_TABS } from '../../constants/constants';
+import {
+    DEFAULT_TABS,
+    GRAPH_SIZE,
+    GRAPH_ZOOM,
+} from '../../constants/constants';
 import { useWeatherContext } from '../../providers/WeatherProvider';
 
 import './index.css';
@@ -30,6 +36,7 @@ interface DailyWeatherChartData {
 
 const Temperature: FC = () => {
     const { weatherData, currentTab } = useWeatherContext();
+
     const minHourlyTemp: number = weatherData.hourly.reduce(
         (acc, tempAtHour) => Math.min(acc, Math.round(tempAtHour.temp)),
         Infinity
@@ -48,9 +55,22 @@ const Temperature: FC = () => {
             }))
             .filter((curr, i) => i);
 
+    let defaultDay = '';
     const xAxisHourly = weatherData.hourly
         .map((hourlyData) => hourlyData.dt)
-        .filter((curr, i) => i);
+        .filter((curr, i) => {
+            const currentDay = new Date(curr * 1000).toLocaleString('en-US', {
+                weekday: 'long',
+            });
+
+            if (defaultDay !== currentDay) {
+                console.log(defaultDay);
+                defaultDay = currentDay;
+                console.log(defaultDay);
+                return i;
+            }
+            return '';
+        });
 
     const VictoryZoomVoronoiContainer = createContainer<
         VictoryZoomContainerProps,
@@ -61,8 +81,8 @@ const Temperature: FC = () => {
         <div className="temperature">
             <div className="hourly-temp-chart">
                 <VictoryChart
-                    width={1000}
-                    height={430}
+                    width={GRAPH_SIZE.width}
+                    height={GRAPH_SIZE.height}
                     scale={{ x: 'time' }}
                     maxDomain={{
                         y: maxHourlyTemp + 1,
@@ -71,6 +91,10 @@ const Temperature: FC = () => {
                         y: minHourlyTemp - 1,
                     }}
                     containerComponent={
+                        // <VictoryZoomContainer
+                        //     zoomDimension="x"
+                        //     zoomDomain={GRAPH_ZOOM}
+                        // />
                         <VictoryZoomVoronoiContainer
                             zoomDomain={{
                                 y: [minHourlyTemp + 1, maxHourlyTemp + 1],
@@ -104,23 +128,22 @@ const Temperature: FC = () => {
                     />
                     <VictoryAxis
                         crossAxis
-                        tickValues={xAxisHourly}
-                        style={{ tickLabels: { fontSize: 8 } }}
+                        style={{ ticks: { stroke: 'grey', size: 10 } }}
                         tickLabelComponent={
-                            <VictoryLabel angle={-45} textAnchor="end" />
+                            <VictoryLabel textAnchor="middle" />
                         }
+                        tickValues={xAxisHourly}
                         tickFormat={(t) =>
                             new Date(t * 1000).toLocaleString('en-US', {
-                                hour: 'numeric',
-                                weekday: 'short',
+                                weekday: 'long',
                             })
                         }
                     />
                     <VictoryAxis
-                        style={{ tickLabels: { fontSize: 8 } }}
                         dependentAxis
                         crossAxis
-                        tickFormat={(t) => `${t}°F`}
+                        style={{ ticks: { stroke: 'grey', size: 10 } }}
+                        tickFormat={(t) => `${Math.round(t)}°F`}
                     />
                 </VictoryChart>
             </div>
@@ -183,8 +206,8 @@ const Temperature: FC = () => {
         <div>
             <div>
                 <VictoryChart
-                    width={1000}
-                    height={450}
+                    width={GRAPH_SIZE.width}
+                    height={GRAPH_SIZE.height}
                     maxDomain={{
                         y: maxDailyTemp + 1,
                     }}
@@ -201,10 +224,11 @@ const Temperature: FC = () => {
                         title="Time of day"
                         colorScale="qualitative"
                         orientation="horizontal"
-                        x={710}
+                        x={GRAPH_SIZE.legendx}
+                        y={GRAPH_SIZE.legendy}
                         style={{
                             border: { stroke: 'black' },
-                            title: { fontSize: 12 },
+                            title: { fontSize: 20 },
                         }}
                         data={[
                             { name: 'Night', symbol: { type: 'square' } },
@@ -214,34 +238,10 @@ const Temperature: FC = () => {
                         ]}
                         labelComponent={
                             <VictoryLabel
-                                style={{ fontSize: '8px' }}
+                                style={{ fontSize: '12px' }}
                                 textAnchor="start"
                             />
                         }
-
-                        // events={[
-                        //     {
-                        //         childName: ['morning', 'day', 'eve', 'night'],
-                        //         target: 'data',
-                        //         eventHandlers: {
-                        //             onMouseOver: () => [
-                        //                 {
-                        //                     childName: ['day'],
-                        //                     mutation: (props) => {
-                        //                         const { fill } = props.style;
-                        //                         return fill === 'tomato'
-                        //                             ? null
-                        //                             : {
-                        //                                   style: {
-                        //                                       fill: 'tomato',
-                        //                                   },
-                        //                               };
-                        //                     },
-                        //                 },
-                        //             ],
-                        //         },
-                        //     },
-                        // ]}
                     />
                     <VictoryGroup
                         colorScale="qualitative"
@@ -305,23 +305,22 @@ const Temperature: FC = () => {
                                 },
                             }}
                         />
-                        <VictoryAxis
-                            crossAxis
-                            style={{ tickLabels: { fontSize: 8 } }}
-                            tickValues={xAxisDaily}
-                            tickFormat={(t) =>
-                                new Date(t * 1000).toLocaleString('en-US', {
-                                    day: 'numeric',
-                                    month: 'numeric',
-                                })
-                            }
-                        />
-                        <VictoryAxis
-                            dependentAxis
-                            crossAxis
-                            style={{ tickLabels: { fontSize: 8 } }}
-                        />
                     </VictoryGroup>
+                    <VictoryAxis
+                        crossAxis
+                        style={{ ticks: { stroke: 'grey', size: 10 } }}
+                        tickValues={xAxisDaily}
+                        tickFormat={(t) =>
+                            new Date(t * 1000).toLocaleString('en-US', {
+                                weekday: 'long',
+                            })
+                        }
+                    />
+                    <VictoryAxis
+                        dependentAxis
+                        crossAxis
+                        style={{ ticks: { stroke: 'grey', size: 10 } }}
+                    />
                 </VictoryChart>
             </div>
         </div>

@@ -6,7 +6,12 @@ import {
     ReactNode,
     useEffect,
 } from 'react';
-import { DEFAULT_TABS, DEFAULT_WEATHER_STATE } from '../constants/constants';
+import {
+    DEFAULT_TABS,
+    DEFAULT_WEATHER_STATE,
+    GRAPH_ZOOM,
+} from '../constants/constants';
+import { GraphZoom } from '../types/graph';
 import { Coords, OneCallWeatherAPI } from '../types/weather';
 
 interface WeatherProviderProps {
@@ -22,6 +27,7 @@ interface WeatherContextType {
     changeTab?: (selectedTab: string) => void;
     currentTab: string;
     currentCity: string;
+    zoomDomain: GraphZoom;
 }
 
 const defaultValue: WeatherContextType = {
@@ -29,6 +35,7 @@ const defaultValue: WeatherContextType = {
     weatherData: DEFAULT_WEATHER_STATE,
     searchCity: '',
     currentTab: DEFAULT_TABS.hourly,
+    zoomDomain: GRAPH_ZOOM,
 };
 
 export const WeatherContext = createContext(defaultValue);
@@ -42,6 +49,7 @@ const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
     const [searchCity, setSearchCity] =
         useState<WeatherContextType['searchCity']>('');
     const [coords, setCoords] = useState<Coords>({ latitude: 0, longitude: 0 });
+    const [zoomDomain, setZoomDomain] = useState<GraphZoom>(GRAPH_ZOOM);
 
     const handleSearchCityInput = (searchInput: string) => {
         setSearchCity(searchInput);
@@ -111,6 +119,7 @@ const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
                 changeTab,
                 currentTab,
                 currentCity,
+                zoomDomain,
             }}
         >
             {children}

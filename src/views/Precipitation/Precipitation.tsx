@@ -8,7 +8,7 @@ import {
     VictoryLegend,
     VictoryVoronoiContainer,
 } from 'victory';
-import { DEFAULT_TABS } from '../../constants/constants';
+import { DEFAULT_TABS, GRAPH_SIZE } from '../../constants/constants';
 import { useWeatherContext } from '../../providers/WeatherProvider';
 
 interface ChartData {
@@ -58,14 +58,25 @@ const Precipitation: FC = () => {
         }, hourlyWeatherData);
 
     hourlyPrecipiationChart.humidity = hourlyPrecipiationChart.humidity.filter(
-        (curr, i) => i % 3 === 0
+        (curr, i) => i
     );
     hourlyPrecipiationChart.precipitation =
-        hourlyPrecipiationChart.precipitation.filter((curr, i) => i % 3 === 0);
+        hourlyPrecipiationChart.precipitation.filter((curr, i) => i);
 
+    let defaultDay = '';
     const xAxisHourly: number[] = weatherData.hourly
         .map((hourlyData) => hourlyData.dt)
-        .filter((curr, i) => i % 3 === 0);
+        .filter((curr, i) => {
+            const currentDay = new Date(curr * 1000).toLocaleString('en-US', {
+                weekday: 'long',
+            });
+
+            if (defaultDay !== currentDay) {
+                defaultDay = currentDay;
+                return i;
+            }
+            return '';
+        });
 
     const dailyWeatherData: PrecipitationChartData = {
         precipitation: [],
@@ -106,8 +117,8 @@ const Precipitation: FC = () => {
     ) => (
         <div>
             <VictoryChart
-                width={1000}
-                height={450}
+                width={GRAPH_SIZE.width}
+                height={GRAPH_SIZE.height}
                 domain={{ y: [0, 100] }}
                 containerComponent={
                     <VictoryVoronoiContainer
@@ -118,10 +129,10 @@ const Precipitation: FC = () => {
                 <VictoryLegend
                     colorScale="qualitative"
                     orientation="horizontal"
-                    x={690}
+                    x={GRAPH_SIZE.legendx}
+                    y={GRAPH_SIZE.legendy}
                     style={{
                         border: { stroke: 'black' },
-                        title: { fontSize: 12 },
                     }}
                     data={[
                         {
@@ -132,14 +143,14 @@ const Precipitation: FC = () => {
                     ]}
                     labelComponent={
                         <VictoryLabel
-                            style={{ fontSize: '8px' }}
+                            style={{ fontSize: '12px' }}
                             textAnchor="start"
                         />
                     }
                 />
                 <VictoryGroup
-                    offset={15}
-                    style={{ data: { width: 10 } }}
+                    offset={8}
+                    style={{ data: { width: 8 } }}
                     colorScale="qualitative"
                 >
                     <VictoryBar
@@ -169,22 +180,19 @@ const Precipitation: FC = () => {
                 </VictoryGroup>
                 <VictoryAxis
                     crossAxis
+                    style={{ ticks: { stroke: 'grey', size: 10 } }}
                     tickValues={axisType}
-                    style={{ tickLabels: { fontSize: 8 } }}
-                    tickLabelComponent={
-                        <VictoryLabel angle={-45} textAnchor="end" />
-                    }
+                    tickLabelComponent={<VictoryLabel textAnchor="middle" />}
                     tickFormat={(t) =>
                         new Date(t * 1000).toLocaleString('en-US', {
-                            hour: 'numeric',
-                            weekday: 'short',
+                            weekday: 'long',
                         })
                     }
                 />
                 <VictoryAxis
                     dependentAxis
                     crossAxis
-                    style={{ tickLabels: { fontSize: 8 } }}
+                    style={{ ticks: { stroke: 'grey', size: 10 } }}
                     tickFormat={(t) => `${t}%`}
                 />
             </VictoryChart>

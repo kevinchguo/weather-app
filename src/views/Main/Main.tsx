@@ -19,9 +19,7 @@ const Main: FC = () => {
     return (
         <div>
             <SearchBar />
-            <div className="weather-content">
-                <TodaysWeather />
-                <HorizontalDivider>Details</HorizontalDivider>
+            <div className="content">
                 <Forecast
                     currentGraphTab={currentGraphTab}
                     changeGraphTab={changeGraphTab}
