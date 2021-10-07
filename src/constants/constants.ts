@@ -1,6 +1,6 @@
 import { GraphTabs, Tabs } from '../types/tabs';
 import { Directions, OneCallWeatherAPI } from '../types/weather';
-import { GraphSize, GraphZoom } from '../types/graph';
+import { GraphFont, GraphSize, GraphZoom } from '../types/graph';
 
 export const DEFAULT_GRAPH_TABS: GraphTabs = {
     temperature: 'Temperature',
@@ -1511,4 +1511,8 @@ export const GRAPH_SIZE: GraphSize = {
 
 export const GRAPH_ZOOM: GraphZoom = {
     x: [0, 0],
+};
+
+export const GRAPH_FONT: GraphFont = {
+    fontFamily: "'Roboto', sans-serif",
 };

@@ -8,3 +8,7 @@ export interface GraphSize {
 export interface GraphZoom {
     x: [number, number];
 }
+
+export interface GraphFont {
+    fontFamily: string;
+}

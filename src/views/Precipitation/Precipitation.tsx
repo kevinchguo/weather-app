@@ -8,7 +8,11 @@ import {
     VictoryLegend,
     VictoryVoronoiContainer,
 } from 'victory';
-import { DEFAULT_TABS, GRAPH_SIZE } from '../../constants/constants';
+import {
+    DEFAULT_TABS,
+    GRAPH_FONT,
+    GRAPH_SIZE,
+} from '../../constants/constants';
 import { useWeatherContext } from '../../providers/WeatherProvider';
 
 interface ChartData {
@@ -143,7 +147,13 @@ const Precipitation: FC = () => {
                     ]}
                     labelComponent={
                         <VictoryLabel
-                            style={{ fontSize: '12px' }}
+                            style={[
+                                { fill: 'black', fontSize: 12 },
+                                {
+                                    fill: 'black',
+                                    fontFamily: GRAPH_FONT.fontFamily,
+                                },
+                            ]}
                             textAnchor="start"
                         />
                     }
@@ -180,7 +190,12 @@ const Precipitation: FC = () => {
                 </VictoryGroup>
                 <VictoryAxis
                     crossAxis
-                    style={{ ticks: { stroke: 'grey', size: 10 } }}
+                    style={{
+                        ticks: { stroke: 'grey', size: 10 },
+                        tickLabels: {
+                            fontFamily: GRAPH_FONT.fontFamily,
+                        },
+                    }}
                     tickValues={axisType}
                     tickLabelComponent={<VictoryLabel textAnchor="middle" />}
                     tickFormat={(t) =>
