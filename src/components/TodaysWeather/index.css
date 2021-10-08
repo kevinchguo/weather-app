@@ -5,8 +5,9 @@
     width: 25%;
     height: 80%;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 8px;
     padding: 20px;
-    font-size: 1.5vw;
+    font-size: 1vw;
 }
 
 .location-details {
@@ -19,7 +20,12 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    align-self: center;
     justify-content: center;
+    width: fit-content;
+    /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 8px;
+    padding-right: 10px; */
 }
 
 .weather-info {

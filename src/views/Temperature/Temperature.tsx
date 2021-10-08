@@ -15,6 +15,7 @@ import {
 } from 'victory';
 import {
     DEFAULT_TABS,
+    GRAPH_FONT,
     GRAPH_SIZE,
     GRAPH_ZOOM,
 } from '../../constants/constants';
@@ -83,6 +84,7 @@ const Temperature: FC = () => {
                 <VictoryChart
                     width={GRAPH_SIZE.width}
                     height={GRAPH_SIZE.height}
+                    padding={GRAPH_SIZE.padding}
                     scale={{ x: 'time' }}
                     maxDomain={{
                         y: maxHourlyTemp + 1,
@@ -104,7 +106,12 @@ const Temperature: FC = () => {
                                     datum.x * 1000
                                 ).toLocaleString('en-US', {
                                     hour: 'numeric',
-                                })}`
+                                })} ${new Date(datum.x * 1000).toLocaleString(
+                                    'en-US',
+                                    {
+                                        weekday: 'short',
+                                    }
+                                )}`
                             }
                         />
                     }
@@ -128,7 +135,10 @@ const Temperature: FC = () => {
                     />
                     <VictoryAxis
                         crossAxis
-                        style={{ ticks: { stroke: 'grey', size: 10 } }}
+                        style={{
+                            ticks: { stroke: 'grey', size: 10 },
+                            tickLabels: { fontFamily: GRAPH_FONT.fontFamily },
+                        }}
                         tickLabelComponent={
                             <VictoryLabel textAnchor="middle" />
                         }
@@ -142,7 +152,13 @@ const Temperature: FC = () => {
                     <VictoryAxis
                         dependentAxis
                         crossAxis
-                        style={{ ticks: { stroke: 'grey', size: 10 } }}
+                        style={{
+                            ticks: { stroke: 'grey', size: 10 },
+                            tickLabels: {
+                                fontFamily: GRAPH_FONT.fontFamily,
+                                padding: 1,
+                            },
+                        }}
                         tickFormat={(t) => `${Math.round(t)}°F`}
                     />
                 </VictoryChart>
@@ -208,6 +224,7 @@ const Temperature: FC = () => {
                 <VictoryChart
                     width={GRAPH_SIZE.width}
                     height={GRAPH_SIZE.height}
+                    padding={GRAPH_SIZE.padding}
                     maxDomain={{
                         y: maxDailyTemp + 1,
                     }}
@@ -216,19 +233,27 @@ const Temperature: FC = () => {
                     }}
                     containerComponent={
                         <VictoryVoronoiContainer
-                            labels={({ datum }) => `${datum.y}°F`}
+                            labels={({ datum }) =>
+                                `${datum.y}°F @ ${
+                                    datum.childName.charAt(0).toUpperCase() +
+                                    datum.childName.slice(1)
+                                }`
+                            }
                         />
                     }
                 >
                     <VictoryLegend
-                        title="Time of day"
                         colorScale="qualitative"
-                        orientation="horizontal"
+                        orientation="vertical"
+                        itemsPerRow={1}
                         x={GRAPH_SIZE.legendx}
                         y={GRAPH_SIZE.legendy}
                         style={{
                             border: { stroke: 'black' },
-                            title: { fontSize: 20 },
+                            title: {
+                                fontSize: 20,
+                                fontFamily: GRAPH_FONT.fontFamily,
+                            },
                         }}
                         data={[
                             { name: 'Night', symbol: { type: 'square' } },
@@ -238,7 +263,10 @@ const Temperature: FC = () => {
                         ]}
                         labelComponent={
                             <VictoryLabel
-                                style={{ fontSize: '12px' }}
+                                style={{
+                                    fontSize: '12px',
+                                    fontFamily: GRAPH_FONT.fontFamily,
+                                }}
                                 textAnchor="start"
                             />
                         }
@@ -308,7 +336,13 @@ const Temperature: FC = () => {
                     </VictoryGroup>
                     <VictoryAxis
                         crossAxis
-                        style={{ ticks: { stroke: 'grey', size: 10 } }}
+                        style={{
+                            ticks: { stroke: 'grey', size: 10 },
+                            tickLabels: {
+                                fontFamily: GRAPH_FONT.fontFamily,
+                                padding: 1,
+                            },
+                        }}
                         tickValues={xAxisDaily}
                         tickFormat={(t) =>
                             new Date(t * 1000).toLocaleString('en-US', {
@@ -319,7 +353,14 @@ const Temperature: FC = () => {
                     <VictoryAxis
                         dependentAxis
                         crossAxis
-                        style={{ ticks: { stroke: 'grey', size: 10 } }}
+                        tickFormat={(t) => `${Math.round(t)}°F`}
+                        style={{
+                            ticks: { stroke: 'grey', size: 10 },
+                            tickLabels: {
+                                fontFamily: GRAPH_FONT.fontFamily,
+                                padding: 1,
+                            },
+                        }}
                     />
                 </VictoryChart>
             </div>

@@ -14,16 +14,14 @@ const TodaysWeather: FC = () => {
     return (
         <div className="todays-weather">
             <div className="location-details">
-                <p>
-                    Today in {currentCity} at{' '}
+                <p>Today in {currentCity}</p>
+                <p className="time-zone-format">
+                    {' '}
                     {new Date(weatherData.current.dt * 1000).toLocaleString(
-                        'en-US',
-                        {
-                            timeZoneName: 'long',
-                            timeZone: weatherData.timezone,
-                        }
+                        'en-US'
                     )}
                 </p>
+                <p>{weatherData.timezone}</p>
             </div>
             <div className="temperature-container">
                 <img

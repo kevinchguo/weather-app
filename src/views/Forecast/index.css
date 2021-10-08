@@ -29,11 +29,12 @@
     font-weight: 600;
     border-bottom: 2px solid cornflowerblue;
     margin: 5px;
+    font-family: 'Poppins', sans-serif;
 }
 
 .unselected-tab {
     margin: 5px;
-
+    font-family: 'Poppins', sans-serif;
     border: 'none';
     background: 'none';
 }

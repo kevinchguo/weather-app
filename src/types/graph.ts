@@ -1,6 +1,7 @@
 export interface GraphSize {
     width: number;
     height: number;
+    padding: number;
     legendx: number;
     legendy: number;
 }

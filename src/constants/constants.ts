@@ -1505,8 +1505,9 @@ export const DIRECTIONS: Directions = {
 export const GRAPH_SIZE: GraphSize = {
     width: 1000,
     height: 600,
-    legendx: 715,
-    legendy: 20,
+    padding: 70,
+    legendx: 400,
+    legendy: 560,
 };
 
 export const GRAPH_ZOOM: GraphZoom = {
@@ -1514,5 +1515,5 @@ export const GRAPH_ZOOM: GraphZoom = {
 };
 
 export const GRAPH_FONT: GraphFont = {
-    fontFamily: "'Roboto', sans-serif",
+    fontFamily: "'Open Sans', sans-serif",
 };
