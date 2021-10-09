@@ -62,8 +62,8 @@ const Wind: FC = () => {
             <div className="wind-details">
                 <div className="compass">
                     <VictoryChart
-                        width={GRAPH_SIZE.width}
-                        height={GRAPH_SIZE.height}
+                        width={GRAPH_SIZE.width - 200}
+                        height={GRAPH_SIZE.height - 50}
                         polar
                     >
                         <VictoryPolarAxis
@@ -82,6 +82,18 @@ const Wind: FC = () => {
                             tickFormat={_.values(DIRECTIONS)}
                         />
                     </VictoryChart>
+                    <div className="slider-container">
+                        <input
+                            type="range"
+                            id="time-slider"
+                            step="1"
+                            min="0"
+                            max={`${weatherType.time.length - 1}`}
+                            value={sliderValue}
+                            onChange={(e) => handleSliderValue(e)}
+                            onKeyDown={(e) => handleKeyPressSliderValue(e)}
+                        />
+                    </div>
                 </div>
                 <div className="wind-info">
                     <p className="info">
@@ -108,18 +120,6 @@ const Wind: FC = () => {
                         {`${weatherType.windDeg[sliderValue]}°`}
                     </p>
                 </div>
-            </div>
-            <div className="slider-container">
-                <input
-                    type="range"
-                    id="time-slider"
-                    step="1"
-                    min="0"
-                    max={`${weatherType.time.length - 1}`}
-                    value={sliderValue}
-                    onChange={(e) => handleSliderValue(e)}
-                    onKeyDown={(e) => handleKeyPressSliderValue(e)}
-                />
             </div>
         </>
     );
