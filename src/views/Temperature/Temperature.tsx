@@ -137,7 +137,10 @@ const Temperature: FC = () => {
                         crossAxis
                         style={{
                             ticks: { stroke: 'grey', size: 10 },
-                            tickLabels: { fontFamily: GRAPH_FONT.fontFamily },
+                            tickLabels: {
+                                fontFamily: GRAPH_FONT.fontFamily,
+                                padding: 1,
+                            },
                         }}
                         tickLabelComponent={
                             <VictoryLabel textAnchor="middle" />

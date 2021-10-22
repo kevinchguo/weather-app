@@ -21,7 +21,7 @@ const TodaysWeather: FC = () => {
                         'en-US'
                     )}
                 </p>
-                <p>{weatherData.timezone}</p>
+                <p>{weatherData.timezone_offset}</p>
             </div>
             <div className="temperature-container">
                 <img
