@@ -14,7 +14,7 @@
     gap: 5px;
 }
 .graphs {
-    margin-left: 20px;
+    margin: 20px;
 }
 
 .divider {
@@ -41,7 +41,6 @@
 
 .weather-content {
     display: flex;
-    flex-direction: row;
     margin: 3em;
     justify-content: space-evenly;
 }

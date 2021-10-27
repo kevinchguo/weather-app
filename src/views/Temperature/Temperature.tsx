@@ -65,9 +65,7 @@ const Temperature: FC = () => {
             });
 
             if (defaultDay !== currentDay) {
-                console.log(defaultDay);
                 defaultDay = currentDay;
-                console.log(defaultDay);
                 return i;
             }
             return '';

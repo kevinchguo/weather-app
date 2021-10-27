@@ -23,6 +23,7 @@ interface WeatherContextType {
     searchCity: string;
     setSearchCity?: React.Dispatch<React.SetStateAction<string>>;
     handleSearchCityInput?: (searchInput: string) => void;
+    convertLocalTimeZone: (unixTime: number, timezoneOffset: number) => number;
     fetchSearchInputWeather?: () => void;
     changeTab?: (selectedTab: string) => void;
     currentTab: string;
@@ -36,6 +37,9 @@ const defaultValue: WeatherContextType = {
     searchCity: '',
     currentTab: DEFAULT_TABS.hourly,
     zoomDomain: GRAPH_ZOOM,
+    convertLocalTimeZone(unixTime: number, timezoneOffset: number): number {
+        throw new Error('Function not implemented.');
+    },
 };
 
 export const WeatherContext = createContext(defaultValue);
@@ -101,6 +105,37 @@ const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
         setCoords(position.coords);
     };
 
+    const convertLocalTimeZone = (unixTime: number, timezoneOffset: number) => {
+        const currTimezoneOffset = Number(
+            new Date().toString().match(/([-\+][0-9]+)\s/)?.[1]
+        );
+        const localTimezoneOffset = Number((timezoneOffset / 60 / 60) * 100);
+        console.log(currTimezoneOffset, localTimezoneOffset);
+        if (currTimezoneOffset < localTimezoneOffset) {
+            const timeDifference =
+                ((localTimezoneOffset - currTimezoneOffset) / 100) * 3600;
+            console.log(
+                'Convert to time ahead ',
+                unixTime,
+                unixTime + timeDifference
+            );
+            return unixTime + timeDifference;
+        }
+        if (currTimezoneOffset > localTimezoneOffset) {
+            const timeDifference =
+                ((currTimezoneOffset - localTimezoneOffset) / 100) * 3600;
+            console.log(
+                'Convert to time behind ',
+                unixTime,
+                unixTime + timeDifference
+            );
+
+            return unixTime - timeDifference;
+        }
+        console.log('same timezone');
+        return unixTime;
+    };
+
     useEffect(() => {
         window.navigator.geolocation.getCurrentPosition(
             successFetchForWeather,
@@ -116,6 +151,7 @@ const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
                 setSearchCity,
                 handleSearchCityInput,
                 fetchSearchInputWeather,
+                convertLocalTimeZone,
                 changeTab,
                 currentTab,
                 currentCity,

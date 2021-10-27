@@ -10,18 +10,23 @@ import './index.css';
 // }
 
 const TodaysWeather: FC = () => {
-    const { weatherData, currentCity } = useWeatherContext();
+    const { weatherData, currentCity, convertLocalTimeZone } =
+        useWeatherContext();
     return (
         <div className="todays-weather">
             <div className="location-details">
                 <p>Today in {currentCity}</p>
                 <p className="time-zone-format">
                     {' '}
-                    {new Date(weatherData.current.dt * 1000).toLocaleString(
-                        'en-US'
-                    )}
+                    {new Date(
+                        convertLocalTimeZone(
+                            weatherData.current.dt,
+                            weatherData.timezone_offset
+                        ) * 1000
+                    ).toLocaleString('en-US')}
                 </p>
-                <p>{weatherData.timezone_offset}</p>
+
+                <p>{}</p>
             </div>
             <div className="temperature-container">
                 <img
@@ -49,7 +54,14 @@ const TodaysWeather: FC = () => {
                         hour: 'numeric',
                         minute: '2-digit',
                         second: '2-digit',
-                    })}
+                    })}{' '}
+                    {
+                        new Date()
+                            .toLocaleTimeString('en-us', {
+                                timeZoneName: 'short',
+                            })
+                            .split(' ')[2]
+                    }
                 </p>
                 <p>
                     Sunset:{' '}
@@ -60,7 +72,14 @@ const TodaysWeather: FC = () => {
                             minute: '2-digit',
                             second: '2-digit',
                         }
-                    )}
+                    )}{' '}
+                    {
+                        new Date()
+                            .toLocaleTimeString('en-us', {
+                                timeZoneName: 'short',
+                            })
+                            .split(' ')[2]
+                    }
                 </p>
             </div>
         </div>

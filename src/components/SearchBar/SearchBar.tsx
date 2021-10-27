@@ -5,6 +5,13 @@ import './index.css';
 const SearchBar: React.FC = () => {
     const { searchCity, handleSearchCityInput, fetchSearchInputWeather } =
         useWeatherContext();
+
+    const handleSearchInputKeyDown = (e: any) => {
+        if (e.key === 'Enter') {
+            console.log(e.target.value);
+        }
+    };
+
     return (
         <div className="navbar">
             <label htmlFor="searchBar" className="search-bar">
@@ -18,6 +25,7 @@ const SearchBar: React.FC = () => {
                             ? handleSearchCityInput(e.target.value)
                             : false
                     }
+                    onKeyDown={handleSearchInputKeyDown}
                 />
                 <button
                     className="search-button"
