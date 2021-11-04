@@ -25,8 +25,6 @@ const TodaysWeather: FC = () => {
                         ) * 1000
                     ).toLocaleString('en-US')}
                 </p>
-
-                <p>{}</p>
             </div>
             <div className="temperature-container">
                 <img
@@ -49,37 +47,28 @@ const TodaysWeather: FC = () => {
                 <p>
                     Sunrise:{' '}
                     {new Date(
-                        weatherData.current.sunrise * 1000
+                        convertLocalTimeZone(
+                            weatherData.current.sunrise,
+                            weatherData.timezone_offset
+                        ) * 1000
                     ).toLocaleString('en-US', {
                         hour: 'numeric',
                         minute: '2-digit',
                         second: '2-digit',
                     })}{' '}
-                    {
-                        new Date()
-                            .toLocaleTimeString('en-us', {
-                                timeZoneName: 'short',
-                            })
-                            .split(' ')[2]
-                    }
                 </p>
                 <p>
                     Sunset:{' '}
-                    {new Date(weatherData.current.sunset * 1000).toLocaleString(
-                        'en-US',
-                        {
-                            hour: 'numeric',
-                            minute: '2-digit',
-                            second: '2-digit',
-                        }
-                    )}{' '}
-                    {
-                        new Date()
-                            .toLocaleTimeString('en-us', {
-                                timeZoneName: 'short',
-                            })
-                            .split(' ')[2]
-                    }
+                    {new Date(
+                        convertLocalTimeZone(
+                            weatherData.current.sunset,
+                            weatherData.timezone_offset
+                        ) * 1000
+                    ).toLocaleString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        second: '2-digit',
+                    })}{' '}
                 </p>
             </div>
         </div>

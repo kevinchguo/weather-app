@@ -1,8 +1,5 @@
 .content {
-    top: 5vh; /* same height as navbar */
     display: flex;
-    justify-content: center;
-    overflow-x: hidden;
 }
 
 .horizontal-divider {
