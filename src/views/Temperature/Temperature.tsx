@@ -125,8 +125,6 @@ const Temperature: FC = () => {
                                 duration: 500,
                                 before: () => ({
                                     _y: 0,
-                                    fill: 'orange',
-                                    label: 'BYE',
                                 }),
                             },
                         }}

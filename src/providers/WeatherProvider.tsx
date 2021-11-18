@@ -24,7 +24,7 @@ interface WeatherContextType {
     setSearchCity?: React.Dispatch<React.SetStateAction<string>>;
     handleSearchCityInput?: (searchInput: string) => void;
     convertLocalTimeZone: (unixTime: number, timezoneOffset: number) => number;
-    fetchSearchInputWeather?: () => void;
+    fetchSearchInputWeather?: (event: any) => void;
     changeTab?: (selectedTab: string) => void;
     currentTab: string;
     currentCity: string;
@@ -63,7 +63,8 @@ const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
         setCurrentTab(selectedTab);
     };
 
-    const fetchSearchInputWeather = () => {
+    const fetchSearchInputWeather = (event: any) => {
+        event.preventDefault();
         fetch(
             `http://api.openweathermap.org/geo/1.0/direct?q=${searchCity}&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
         )
@@ -110,29 +111,18 @@ const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
             new Date().toString().match(/([-\+][0-9]+)\s/)?.[1]
         );
         const localTimezoneOffset = Number((timezoneOffset / 60 / 60) * 100);
-        console.log(currTimezoneOffset, localTimezoneOffset);
         if (currTimezoneOffset < localTimezoneOffset) {
             const timeDifference =
                 ((localTimezoneOffset - currTimezoneOffset) / 100) * 3600;
-            console.log(
-                'Convert to time ahead ',
-                unixTime,
-                unixTime + timeDifference
-            );
+
             return unixTime + timeDifference;
         }
         if (currTimezoneOffset > localTimezoneOffset) {
             const timeDifference =
                 ((currTimezoneOffset - localTimezoneOffset) / 100) * 3600;
-            console.log(
-                'Convert to time behind ',
-                unixTime,
-                unixTime + timeDifference
-            );
 
             return unixTime - timeDifference;
         }
-        console.log('same timezone');
         return unixTime;
     };
 

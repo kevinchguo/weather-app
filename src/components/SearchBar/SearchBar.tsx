@@ -6,34 +6,30 @@ const SearchBar: React.FC = () => {
     const { searchCity, handleSearchCityInput, fetchSearchInputWeather } =
         useWeatherContext();
 
-    const handleSearchInputKeyDown = (e: any) => {
-        if (e.key === 'Enter') {
-            console.log(e.target.value);
-        }
-    };
-
     return (
         <div className="navbar">
             <label htmlFor="searchBar" className="search-bar">
                 <p className="search">Search a city</p>
-                <input
-                    id="searchBar"
-                    type="text"
-                    value={searchCity}
-                    onChange={(e) =>
-                        handleSearchCityInput
-                            ? handleSearchCityInput(e.target.value)
-                            : false
-                    }
-                    onKeyDown={handleSearchInputKeyDown}
-                />
-                <button
-                    className="search-button"
-                    type="button"
-                    onClick={fetchSearchInputWeather}
+                <form
+                    className="search-form"
+                    onSubmit={fetchSearchInputWeather}
                 >
-                    Search
-                </button>
+                    <input
+                        id="searchBar"
+                        type="text"
+                        value={searchCity}
+                        onChange={(e) =>
+                            handleSearchCityInput
+                                ? handleSearchCityInput(e.target.value)
+                                : false
+                        }
+                    />
+                    <input
+                        className="search-button"
+                        type="submit"
+                        value="Search"
+                    />
+                </form>
             </label>
         </div>
     );
