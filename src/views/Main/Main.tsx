@@ -19,13 +19,11 @@ const Main: FC = () => {
     return (
         <div>
             <SearchBar />
-            <div className="content">
-                <Forecast
-                    currentGraphTab={currentGraphTab}
-                    changeGraphTab={changeGraphTab}
-                    graphTabs={DEFAULT_GRAPH_TABS}
-                />
-            </div>
+            <Forecast
+                currentGraphTab={currentGraphTab}
+                changeGraphTab={changeGraphTab}
+                graphTabs={DEFAULT_GRAPH_TABS}
+            />
         </div>
     );
 };

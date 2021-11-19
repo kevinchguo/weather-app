@@ -77,92 +77,77 @@ const Temperature: FC = () => {
     >('zoom', 'voronoi');
 
     const renderHourlyWeather = () => (
-        <div className="temperature">
-            <div className="hourly-temp-chart">
-                <VictoryChart
-                    width={GRAPH_SIZE.width}
-                    height={GRAPH_SIZE.height}
-                    padding={GRAPH_SIZE.padding}
-                    scale={{ x: 'time' }}
-                    maxDomain={{
-                        y: maxHourlyTemp + 1,
-                    }}
-                    minDomain={{
-                        y: minHourlyTemp - 1,
-                    }}
-                    containerComponent={
-                        // <VictoryZoomContainer
-                        //     zoomDimension="x"
-                        //     zoomDomain={GRAPH_ZOOM}
-                        // />
-                        <VictoryZoomVoronoiContainer
-                            zoomDomain={{
-                                y: [minHourlyTemp + 1, maxHourlyTemp + 1],
-                            }}
-                            labels={({ datum }) =>
-                                `${datum.y}°F @ ${new Date(
-                                    datum.x * 1000
-                                ).toLocaleString('en-US', {
-                                    hour: 'numeric',
-                                })} ${new Date(datum.x * 1000).toLocaleString(
-                                    'en-US',
-                                    {
-                                        weekday: 'short',
-                                    }
-                                )}`
-                            }
-                        />
+        <VictoryChart
+            width={GRAPH_SIZE.width}
+            height={GRAPH_SIZE.height}
+            padding={GRAPH_SIZE.padding}
+            scale={{ x: 'time' }}
+            maxDomain={{
+                y: maxHourlyTemp + 1,
+            }}
+            minDomain={{
+                y: minHourlyTemp - 1,
+            }}
+            containerComponent={
+                <VictoryVoronoiContainer
+                    labels={({ datum }) =>
+                        `${datum.y}°F @ ${new Date(
+                            datum.x * 1000
+                        ).toLocaleString('en-US', {
+                            hour: 'numeric',
+                        })} ${new Date(datum.x * 1000).toLocaleString('en-US', {
+                            weekday: 'short',
+                        })}`
                     }
-                >
-                    <VictoryArea
-                        interpolation="basis"
-                        data={hourlyTemperatureChart}
-                        style={{
-                            data: { fill: 'lightblue', stroke: 'teal' },
-                        }}
-                        animate={{
-                            onExit: {
-                                duration: 500,
-                                before: () => ({
-                                    _y: 0,
-                                }),
-                            },
-                        }}
-                    />
-                    <VictoryAxis
-                        crossAxis
-                        style={{
-                            ticks: { stroke: 'grey', size: 10 },
-                            tickLabels: {
-                                fontFamily: GRAPH_FONT.fontFamily,
-                                padding: 1,
-                            },
-                        }}
-                        tickLabelComponent={
-                            <VictoryLabel textAnchor="middle" />
-                        }
-                        tickValues={xAxisHourly}
-                        tickFormat={(t) =>
-                            new Date(t * 1000).toLocaleString('en-US', {
-                                weekday: 'long',
-                            })
-                        }
-                    />
-                    <VictoryAxis
-                        dependentAxis
-                        crossAxis
-                        style={{
-                            ticks: { stroke: 'grey', size: 10 },
-                            tickLabels: {
-                                fontFamily: GRAPH_FONT.fontFamily,
-                                padding: 1,
-                            },
-                        }}
-                        tickFormat={(t) => `${Math.round(t)}°F`}
-                    />
-                </VictoryChart>
-            </div>
-        </div>
+                />
+            }
+        >
+            <VictoryArea
+                interpolation="basis"
+                data={hourlyTemperatureChart}
+                style={{
+                    data: { fill: 'lightblue', stroke: 'teal' },
+                }}
+                animate={{
+                    duration: 500,
+                    onExit: {
+                        before: () => ({ _x: 0 }),
+                    },
+                    onEnter: {
+                        before: () => ({ _x: 0 }),
+                    },
+                }}
+            />
+            <VictoryAxis
+                crossAxis
+                style={{
+                    ticks: { stroke: 'grey', size: 10 },
+                    tickLabels: {
+                        fontFamily: GRAPH_FONT.fontFamily,
+                        padding: 1,
+                    },
+                }}
+                tickLabelComponent={<VictoryLabel textAnchor="middle" />}
+                tickValues={xAxisHourly}
+                tickFormat={(t) =>
+                    new Date(t * 1000).toLocaleString('en-US', {
+                        weekday: 'long',
+                    })
+                }
+            />
+            <VictoryAxis
+                dependentAxis
+                crossAxis
+                style={{
+                    ticks: { stroke: 'grey', size: 10 },
+                    tickLabels: {
+                        fontFamily: GRAPH_FONT.fontFamily,
+                        padding: 1,
+                    },
+                }}
+                tickFormat={(t) => `${Math.round(t)}°F`}
+            />
+        </VictoryChart>
     );
 
     const dailyWeatherData: DailyWeatherChartData = {
@@ -218,152 +203,148 @@ const Temperature: FC = () => {
     const xAxisDaily = weatherData.daily.map((dailyData) => dailyData.dt);
 
     const renderDailyWeather = () => (
-        <div>
-            <div>
-                <VictoryChart
-                    width={GRAPH_SIZE.width}
-                    height={GRAPH_SIZE.height}
-                    padding={GRAPH_SIZE.padding}
-                    maxDomain={{
-                        y: maxDailyTemp + 1,
-                    }}
-                    minDomain={{
-                        y: minDailyTemp - 1,
-                    }}
-                    containerComponent={
-                        <VictoryVoronoiContainer
-                            labels={({ datum }) =>
-                                `${datum.y}°F @ ${
-                                    datum.childName.charAt(0).toUpperCase() +
-                                    datum.childName.slice(1)
-                                }`
-                            }
-                        />
+        <VictoryChart
+            width={GRAPH_SIZE.width}
+            height={GRAPH_SIZE.height}
+            padding={GRAPH_SIZE.padding}
+            maxDomain={{
+                y: maxDailyTemp + 1,
+            }}
+            minDomain={{
+                y: minDailyTemp - 1,
+            }}
+            containerComponent={
+                <VictoryVoronoiContainer
+                    labels={({ datum }) =>
+                        `${datum.y}°F @ ${
+                            datum.childName.charAt(0).toUpperCase() +
+                            datum.childName.slice(1)
+                        }`
                     }
-                >
-                    <VictoryLegend
-                        colorScale="qualitative"
-                        orientation="vertical"
-                        itemsPerRow={1}
-                        x={GRAPH_SIZE.legendx}
-                        y={GRAPH_SIZE.legendy}
+                />
+            }
+        >
+            <VictoryLegend
+                colorScale="qualitative"
+                orientation="vertical"
+                itemsPerRow={1}
+                x={GRAPH_SIZE.legendx}
+                y={GRAPH_SIZE.legendy}
+                style={{
+                    border: { stroke: 'black' },
+                    title: {
+                        fontSize: 20,
+                        fontFamily: GRAPH_FONT.fontFamily,
+                    },
+                }}
+                data={[
+                    { name: 'Night', symbol: { type: 'square' } },
+                    { name: 'Eve', symbol: { type: 'square' } },
+                    { name: 'Day', symbol: { type: 'square' } },
+                    { name: 'Morning', symbol: { type: 'square' } },
+                ]}
+                labelComponent={
+                    <VictoryLabel
                         style={{
-                            border: { stroke: 'black' },
-                            title: {
-                                fontSize: 20,
-                                fontFamily: GRAPH_FONT.fontFamily,
-                            },
+                            fontSize: '12px',
+                            fontFamily: GRAPH_FONT.fontFamily,
                         }}
-                        data={[
-                            { name: 'Night', symbol: { type: 'square' } },
-                            { name: 'Eve', symbol: { type: 'square' } },
-                            { name: 'Day', symbol: { type: 'square' } },
-                            { name: 'Morning', symbol: { type: 'square' } },
-                        ]}
-                        labelComponent={
-                            <VictoryLabel
-                                style={{
-                                    fontSize: '12px',
-                                    fontFamily: GRAPH_FONT.fontFamily,
-                                }}
-                                textAnchor="start"
-                            />
-                        }
+                        textAnchor="start"
                     />
-                    <VictoryGroup
-                        colorScale="qualitative"
-                        style={{
-                            data: { strokeWidth: 3, fillOpacity: 0.2 },
-                        }}
-                    >
-                        <VictoryArea
-                            name="morning"
-                            style={{}}
-                            data={reducedDailyWeatherData.morn}
-                            animate={{
-                                onExit: {
-                                    duration: 500,
-                                    before: () => ({
-                                        _y: 0,
-                                        fill: 'orange',
-                                    }),
-                                },
-                            }}
-                        />
-                        <VictoryArea
-                            name="day"
-                            style={{}}
-                            data={reducedDailyWeatherData.day}
-                            animate={{
-                                onExit: {
-                                    duration: 500,
-                                    before: () => ({
-                                        _y: 0,
-                                        fill: 'orange',
-                                    }),
-                                },
-                            }}
-                        />
-                        <VictoryArea
-                            name="eve"
-                            style={{}}
-                            data={reducedDailyWeatherData.eve}
-                            animate={{
-                                onExit: {
-                                    duration: 500,
-                                    before: () => ({
-                                        _y: 0,
-                                        fill: 'orange',
-                                    }),
-                                },
-                            }}
-                        />
-                        <VictoryArea
-                            name="night"
-                            style={{}}
-                            data={reducedDailyWeatherData.night}
-                            animate={{
-                                onExit: {
-                                    duration: 500,
-                                    before: () => ({
-                                        _y: 0,
-                                        fill: 'orange',
-                                    }),
-                                },
-                            }}
-                        />
-                    </VictoryGroup>
-                    <VictoryAxis
-                        crossAxis
-                        style={{
-                            ticks: { stroke: 'grey', size: 10 },
-                            tickLabels: {
-                                fontFamily: GRAPH_FONT.fontFamily,
-                                padding: 1,
-                            },
-                        }}
-                        tickValues={xAxisDaily}
-                        tickFormat={(t) =>
-                            new Date(t * 1000).toLocaleString('en-US', {
-                                weekday: 'long',
-                            })
-                        }
-                    />
-                    <VictoryAxis
-                        dependentAxis
-                        crossAxis
-                        tickFormat={(t) => `${Math.round(t)}°F`}
-                        style={{
-                            ticks: { stroke: 'grey', size: 10 },
-                            tickLabels: {
-                                fontFamily: GRAPH_FONT.fontFamily,
-                                padding: 1,
-                            },
-                        }}
-                    />
-                </VictoryChart>
-            </div>
-        </div>
+                }
+            />
+            <VictoryGroup
+                colorScale="qualitative"
+                style={{
+                    data: { strokeWidth: 3, fillOpacity: 0.2 },
+                }}
+            >
+                <VictoryArea
+                    name="morning"
+                    style={{}}
+                    data={reducedDailyWeatherData.morn}
+                    animate={{
+                        onExit: {
+                            duration: 500,
+                            before: () => ({
+                                _y: 0,
+                                fill: 'orange',
+                            }),
+                        },
+                    }}
+                />
+                <VictoryArea
+                    name="day"
+                    style={{}}
+                    data={reducedDailyWeatherData.day}
+                    animate={{
+                        onExit: {
+                            duration: 500,
+                            before: () => ({
+                                _y: 0,
+                                fill: 'orange',
+                            }),
+                        },
+                    }}
+                />
+                <VictoryArea
+                    name="eve"
+                    style={{}}
+                    data={reducedDailyWeatherData.eve}
+                    animate={{
+                        onExit: {
+                            duration: 500,
+                            before: () => ({
+                                _y: 0,
+                                fill: 'orange',
+                            }),
+                        },
+                    }}
+                />
+                <VictoryArea
+                    name="night"
+                    style={{}}
+                    data={reducedDailyWeatherData.night}
+                    animate={{
+                        onExit: {
+                            duration: 500,
+                            before: () => ({
+                                _y: 0,
+                                fill: 'orange',
+                            }),
+                        },
+                    }}
+                />
+            </VictoryGroup>
+            <VictoryAxis
+                crossAxis
+                style={{
+                    ticks: { stroke: 'grey', size: 10 },
+                    tickLabels: {
+                        fontFamily: GRAPH_FONT.fontFamily,
+                        padding: 1,
+                    },
+                }}
+                tickValues={xAxisDaily}
+                tickFormat={(t) =>
+                    new Date(t * 1000).toLocaleString('en-US', {
+                        weekday: 'long',
+                    })
+                }
+            />
+            <VictoryAxis
+                dependentAxis
+                crossAxis
+                tickFormat={(t) => `${Math.round(t)}°F`}
+                style={{
+                    ticks: { stroke: 'grey', size: 10 },
+                    tickLabels: {
+                        fontFamily: GRAPH_FONT.fontFamily,
+                        padding: 1,
+                    },
+                }}
+            />
+        </VictoryChart>
     );
 
     return (

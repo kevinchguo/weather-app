@@ -119,118 +119,116 @@ const Precipitation: FC = () => {
         weatherDataType: PrecipitationChartData,
         axisType: number[]
     ) => (
-        <div>
-            <VictoryChart
-                width={GRAPH_SIZE.width}
-                height={GRAPH_SIZE.height}
-                padding={GRAPH_SIZE.padding}
-                domain={{ y: [0, 100] }}
-                containerComponent={
-                    <VictoryVoronoiContainer
-                        voronoiPadding={10}
-                        labels={({ datum }) => {
-                            if (datum.childName === 'bar-chart-group-1-0') {
-                                return `${datum.y}% Precipitation`;
-                            }
-                            return `${datum.y}% Humidity`;
-                        }}
-                        style={{ fontFamily: GRAPH_FONT.fontFamily }}
+        <VictoryChart
+            width={GRAPH_SIZE.width}
+            height={GRAPH_SIZE.height}
+            padding={GRAPH_SIZE.padding}
+            domain={{ y: [0, 100] }}
+            containerComponent={
+                <VictoryVoronoiContainer
+                    voronoiPadding={10}
+                    labels={({ datum }) => {
+                        if (datum.childName === 'bar-chart-group-1-0') {
+                            return `${datum.y}% Precipitation`;
+                        }
+                        return `${datum.y}% Humidity`;
+                    }}
+                    style={{ fontFamily: GRAPH_FONT.fontFamily }}
+                />
+            }
+        >
+            <VictoryGroup
+                offset={8}
+                style={{ data: { width: 8 } }}
+                colorScale="qualitative"
+            >
+                <VictoryBar
+                    data={weatherDataType.precipitation}
+                    animate={{
+                        onExit: {
+                            duration: 500,
+                            before: () => ({
+                                _y: 0,
+                                fill: 'orange',
+                            }),
+                        },
+                    }}
+                />
+                <VictoryBar
+                    data={weatherDataType.humidity}
+                    animate={{
+                        onExit: {
+                            duration: 500,
+                            before: () => ({
+                                _y: 0,
+                                fill: 'orange',
+                            }),
+                        },
+                    }}
+                />
+            </VictoryGroup>
+            <VictoryAxis
+                crossAxis
+                style={{
+                    ticks: { stroke: 'grey', size: 10 },
+                    tickLabels: {
+                        fontFamily: GRAPH_FONT.fontFamily,
+                        padding: 1,
+                    },
+                }}
+                tickValues={axisType}
+                tickLabelComponent={<VictoryLabel textAnchor="middle" />}
+                tickFormat={(t) =>
+                    new Date(t * 1000).toLocaleString('en-US', {
+                        weekday: 'long',
+                    })
+                }
+            />
+            <VictoryAxis
+                dependentAxis
+                crossAxis
+                style={{
+                    ticks: { stroke: 'grey', size: 10 },
+                    tickLabels: {
+                        fontFamily: GRAPH_FONT.fontFamily,
+                        padding: 1,
+                    },
+                }}
+                tickFormat={(t) => `${t}%`}
+            />
+            <VictoryLegend
+                colorScale="qualitative"
+                orientation="vertical"
+                x={GRAPH_SIZE.legendx}
+                y={GRAPH_SIZE.legendy}
+                itemsPerRow={1}
+                style={{
+                    border: {
+                        stroke: 'black',
+                        borderRadius: '8px',
+                    },
+                }}
+                data={[
+                    {
+                        name: 'Probability of Precipitation',
+                        symbol: { type: 'square' },
+                    },
+                    { name: 'Humidity', symbol: { type: 'square' } },
+                ]}
+                labelComponent={
+                    <VictoryLabel
+                        style={[
+                            { fill: 'black', fontSize: 12 },
+                            {
+                                fill: 'black',
+                                fontFamily: GRAPH_FONT.fontFamily,
+                            },
+                        ]}
+                        textAnchor="start"
                     />
                 }
-            >
-                <VictoryGroup
-                    offset={8}
-                    style={{ data: { width: 8 } }}
-                    colorScale="qualitative"
-                >
-                    <VictoryBar
-                        data={weatherDataType.precipitation}
-                        animate={{
-                            onExit: {
-                                duration: 500,
-                                before: () => ({
-                                    _y: 0,
-                                    fill: 'orange',
-                                }),
-                            },
-                        }}
-                    />
-                    <VictoryBar
-                        data={weatherDataType.humidity}
-                        animate={{
-                            onExit: {
-                                duration: 500,
-                                before: () => ({
-                                    _y: 0,
-                                    fill: 'orange',
-                                }),
-                            },
-                        }}
-                    />
-                </VictoryGroup>
-                <VictoryAxis
-                    crossAxis
-                    style={{
-                        ticks: { stroke: 'grey', size: 10 },
-                        tickLabels: {
-                            fontFamily: GRAPH_FONT.fontFamily,
-                            padding: 1,
-                        },
-                    }}
-                    tickValues={axisType}
-                    tickLabelComponent={<VictoryLabel textAnchor="middle" />}
-                    tickFormat={(t) =>
-                        new Date(t * 1000).toLocaleString('en-US', {
-                            weekday: 'long',
-                        })
-                    }
-                />
-                <VictoryAxis
-                    dependentAxis
-                    crossAxis
-                    style={{
-                        ticks: { stroke: 'grey', size: 10 },
-                        tickLabels: {
-                            fontFamily: GRAPH_FONT.fontFamily,
-                            padding: 1,
-                        },
-                    }}
-                    tickFormat={(t) => `${t}%`}
-                />
-                <VictoryLegend
-                    colorScale="qualitative"
-                    orientation="vertical"
-                    x={GRAPH_SIZE.legendx}
-                    y={GRAPH_SIZE.legendy}
-                    itemsPerRow={1}
-                    style={{
-                        border: {
-                            stroke: 'black',
-                            borderRadius: '8px',
-                        },
-                    }}
-                    data={[
-                        {
-                            name: 'Probability of Precipitation',
-                            symbol: { type: 'square' },
-                        },
-                        { name: 'Humidity', symbol: { type: 'square' } },
-                    ]}
-                    labelComponent={
-                        <VictoryLabel
-                            style={[
-                                { fill: 'black', fontSize: 12 },
-                                {
-                                    fill: 'black',
-                                    fontFamily: GRAPH_FONT.fontFamily,
-                                },
-                            ]}
-                            textAnchor="start"
-                        />
-                    }
-                />
-            </VictoryChart>
-        </div>
+            />
+        </VictoryChart>
     );
 
     return (

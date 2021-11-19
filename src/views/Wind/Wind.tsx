@@ -1,5 +1,10 @@
 import { FC, useState } from 'react';
-import { VictoryChart, VictoryLabel, VictoryPolarAxis } from 'victory';
+import {
+    VictoryChart,
+    VictoryLabel,
+    VictoryPolarAxis,
+    VictoryTheme,
+} from 'victory';
 import _ from 'lodash';
 import {
     DEFAULT_TABS,
@@ -59,77 +64,74 @@ const Wind: FC = () => {
 
     const renderWeatherType = (weatherType: WindDataChart) => (
         <>
-            <div className="wind-details">
-                <div className="compass">
-                    <VictoryChart
-                        width={GRAPH_SIZE.width - 200}
-                        height={GRAPH_SIZE.height - 50}
-                        polar
-                    >
-                        <VictoryPolarAxis
-                            dependentAxis
-                            labelPlacement="perpendicular"
-                            axisAngle={weatherType.windDeg[sliderValue]}
-                            tickFormat={(t) => `${t}`}
-                            tickValues={['', '^']}
-                            tickLabelComponent={
-                                <VictoryLabel style={[{ fontSize: '15px' }]} />
-                            }
-                        />
-                        <VictoryPolarAxis
-                            labelPlacement="vertical"
-                            tickValues={_.keys(DIRECTIONS).map((k) => +k)}
-                            tickFormat={_.values(DIRECTIONS)}
-                        />
-                    </VictoryChart>
-                    <div className="slider-container">
-                        <input
-                            type="range"
-                            id="time-slider"
-                            step="1"
-                            min="0"
-                            max={`${weatherType.time.length - 1}`}
-                            value={sliderValue}
-                            onChange={(e) => handleSliderValue(e)}
-                            onKeyDown={(e) => handleKeyPressSliderValue(e)}
-                        />
-                    </div>
+            <div className="compass">
+                <VictoryChart
+                    width={GRAPH_SIZE.width - 200}
+                    height={GRAPH_SIZE.height - 50}
+                    polar
+                >
+                    <VictoryPolarAxis
+                        theme={VictoryTheme.material}
+                        dependentAxis
+                        labelPlacement="perpendicular"
+                        axisAngle={weatherType.windDeg[sliderValue]}
+                        tickFormat={(t) => `${t}`}
+                        tickValues={['', '^']}
+                        tickLabelComponent={
+                            <VictoryLabel style={[{ fontSize: '15px' }]} />
+                        }
+                    />
+                    <VictoryPolarAxis
+                        labelPlacement="vertical"
+                        tickValues={_.keys(DIRECTIONS).map((k) => +k)}
+                        tickFormat={_.values(DIRECTIONS)}
+                    />
+                </VictoryChart>
+                <div className="slider-container">
+                    <input
+                        type="range"
+                        id="time-slider"
+                        step="1"
+                        min="0"
+                        max={`${weatherType.time.length - 1}`}
+                        value={sliderValue}
+                        onChange={(e) => handleSliderValue(e)}
+                        onKeyDown={(e) => handleKeyPressSliderValue(e)}
+                    />
                 </div>
-                <div className="wind-info">
-                    <p className="info">
-                        <span className="span-text">Date: </span>
-                        {new Date(
-                            weatherType.time[sliderValue] * 1000
-                        ).toLocaleString('en-US', {
-                            hour: 'numeric',
-                            weekday: 'short',
-                        })}
-                    </p>
-                    <p className="info">
-                        <span className="span-text">Wind speed: </span>
-                        {` ${Math.round(
-                            weatherType.windSpeed[sliderValue]
-                        )} mph`}
-                    </p>
-                    <p className="info">
-                        <span className="span-text">Wind gust: </span>
-                        {`${Math.round(weatherType.windGust[sliderValue])} mph`}
-                    </p>
-                    <p className="info">
-                        <span className="span-text">Wind degrees: </span>
-                        {`${weatherType.windDeg[sliderValue]}°`}
-                    </p>
-                </div>
+            </div>
+            <div className="wind-info">
+                <p className="info">
+                    <span className="span-text">Date: </span>
+                    {new Date(
+                        weatherType.time[sliderValue] * 1000
+                    ).toLocaleString('en-US', {
+                        hour: 'numeric',
+                        weekday: 'short',
+                    })}
+                </p>
+                <p className="info">
+                    <span className="span-text">Wind speed: </span>
+                    {` ${Math.round(weatherType.windSpeed[sliderValue])} mph`}
+                </p>
+                <p className="info">
+                    <span className="span-text">Wind gust: </span>
+                    {`${Math.round(weatherType.windGust[sliderValue])} mph`}
+                </p>
+                <p className="info">
+                    <span className="span-text">Wind degrees: </span>
+                    {`${weatherType.windDeg[sliderValue]}°`}
+                </p>
             </div>
         </>
     );
 
     return (
-        <div>
+        <>
             {currentTab === DEFAULT_TABS.hourly
                 ? renderWeatherType(hourlyWindData)
                 : renderWeatherType(dailyWindData)}
-        </div>
+        </>
     );
 };
 
