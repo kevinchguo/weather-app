@@ -346,6 +346,10 @@ const Wind: FC = () => {
         }
     }, [sliderValue, currentTab]);
 
+    useEffect(() => {
+        setSliderValue(0);
+    }, [currentTab]);
+
     const renderWeatherType = (weatherType: WindDataChart) => (
         <>
             <div className="compass">
@@ -363,7 +367,7 @@ const Wind: FC = () => {
                         ]}
                         labelPlacement="perpendicular"
                         tickFormat={(t) => `${t}mph`}
-                        axisAngle={90}
+                        axisAngle={65}
                         standalone={false}
                     />
                     <VictoryPolarAxis
@@ -373,7 +377,7 @@ const Wind: FC = () => {
                         standalone={false}
                     />
                     <VictoryBar
-                        style={{ data: { fill: 'cornflowerblue', width: 80 } }}
+                        style={{ data: { fill: 'cornflowerblue', width: 35 } }}
                         data={windSpeedBarData}
                     />
                 </VictoryChart>
