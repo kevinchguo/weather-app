@@ -1,13 +1,6 @@
 import { FC } from 'react';
 import { useWeatherContext } from '../../providers/WeatherProvider';
-import GoogleMap from '../GoogleMap';
 import './index.css';
-
-// const Map: FC = () => {
-// 	return (
-
-// 	)
-// }
 
 const TodaysWeather: FC = () => {
     const { weatherData, currentCity, convertLocalTimeZone } =

@@ -7,17 +7,11 @@ import {
     VictoryGroup,
     VictoryLegend,
     VictoryLabel,
-    createContainer,
-    VictoryVoronoiContainerProps,
-    VictoryZoomContainerProps,
-    VictoryZoomContainer,
-    VictoryTooltip,
 } from 'victory';
 import {
     DEFAULT_TABS,
     GRAPH_FONT,
     GRAPH_SIZE,
-    GRAPH_ZOOM,
 } from '../../constants/constants';
 import { useWeatherContext } from '../../providers/WeatherProvider';
 
@@ -70,11 +64,6 @@ const Temperature: FC = () => {
             }
             return '';
         });
-
-    const VictoryZoomVoronoiContainer = createContainer<
-        VictoryZoomContainerProps,
-        VictoryVoronoiContainerProps
-    >('zoom', 'voronoi');
 
     const renderHourlyWeather = () => (
         <VictoryChart

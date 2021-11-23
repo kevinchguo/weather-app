@@ -1,7 +1,8 @@
-import { FC, useState } from 'react';
+/* eslint-disable indent */
+import { FC, useEffect, useState } from 'react';
 import {
+    VictoryBar,
     VictoryChart,
-    VictoryLabel,
     VictoryPolarAxis,
     VictoryTheme,
 } from 'victory';
@@ -20,11 +21,27 @@ interface WindDataChart {
     windSpeed: number[];
     windGust: number[];
     windDeg: number[];
+    minMaxWindSpeed: number[] | [0, 0];
+}
+
+interface WindSpeedBar {
+    x: number;
+    y: number;
 }
 
 const Wind: FC = () => {
     const { weatherData, currentTab } = useWeatherContext();
     const [sliderValue, setSliderValue] = useState<number>(0);
+    const [windSpeedBarData, setWindSpeedBarData] = useState<WindSpeedBar[]>([
+        { x: 0, y: 0 },
+        { x: 45, y: 0 },
+        { x: 90, y: 0 },
+        { x: 135, y: 0 },
+        { x: 180, y: 0 },
+        { x: 225, y: 0 },
+        { x: 270, y: 0 },
+        { x: 315, y: 0 },
+    ]);
 
     const handleSliderValue = (e: any) => {
         setSliderValue(e.target.value);
@@ -55,36 +72,309 @@ const Wind: FC = () => {
                 acc.windDeg.push(curr.wind_deg);
                 return acc;
             },
-            { time: [], windSpeed: [], windGust: [], windDeg: [] }
+            {
+                time: [],
+                windSpeed: [],
+                windGust: [],
+                windDeg: [],
+            }
         );
 
     const hourlyWindData: WindDataChart = reduceWeatherData(weatherData.hourly);
 
     const dailyWindData: WindDataChart = reduceWeatherData(weatherData.daily);
 
+    const calculateMinMaxWindSpeed = (
+        windSpeed: WindDataChart,
+        weatherDataType: string
+    ) => {
+        const minWindSpeed: number = windSpeed.windSpeed.reduce(
+            (acc, speed) => Math.min(acc, Math.round(speed)),
+            Infinity
+        );
+        const maxWindSpeed: number = windSpeed.windSpeed.reduce(
+            (acc, speed) => Math.max(acc, Math.round(speed)),
+            -Infinity
+        );
+        if (weatherDataType === 'hourly') {
+            hourlyWindData.minMaxWindSpeed = [minWindSpeed, maxWindSpeed];
+        } else if (weatherDataType === 'daily') {
+            dailyWindData.minMaxWindSpeed = [minWindSpeed, maxWindSpeed];
+        }
+    };
+
+    calculateMinMaxWindSpeed(hourlyWindData, 'hourly');
+    calculateMinMaxWindSpeed(dailyWindData, 'daily');
+
+    useEffect(() => {
+        if (currentTab === 'Hourly') {
+            switch (true) {
+                case hourlyWindData.windDeg[sliderValue] > 337 &&
+                    hourlyWindData.windDeg[sliderValue] <= 22:
+                    setWindSpeedBarData([
+                        { x: 0, y: hourlyWindData.windSpeed[sliderValue] },
+                        { x: 45, y: 0 },
+                        { x: 90, y: 0 },
+                        { x: 135, y: 0 },
+                        { x: 180, y: 0 },
+                        { x: 225, y: 0 },
+                        { x: 270, y: 0 },
+                        { x: 315, y: 0 },
+                    ]);
+                    break;
+                case hourlyWindData.windDeg[sliderValue] > 22 &&
+                    hourlyWindData.windDeg[sliderValue] <= 67:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: hourlyWindData.windSpeed[sliderValue] },
+                        { x: 90, y: 0 },
+                        { x: 135, y: 0 },
+                        { x: 180, y: 0 },
+                        { x: 225, y: 0 },
+                        { x: 270, y: 0 },
+                        { x: 315, y: 0 },
+                    ]);
+                    break;
+                case hourlyWindData.windDeg[sliderValue] > 67 &&
+                    hourlyWindData.windDeg[sliderValue] <= 112:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: 0 },
+                        { x: 90, y: hourlyWindData.windSpeed[sliderValue] },
+                        { x: 135, y: 0 },
+                        { x: 180, y: 0 },
+                        { x: 225, y: 0 },
+                        { x: 270, y: 0 },
+                        { x: 315, y: 0 },
+                    ]);
+                    break;
+                case hourlyWindData.windDeg[sliderValue] > 112 &&
+                    hourlyWindData.windDeg[sliderValue] <= 157:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: 0 },
+                        { x: 90, y: 0 },
+                        { x: 135, y: hourlyWindData.windSpeed[sliderValue] },
+                        { x: 180, y: 0 },
+                        { x: 225, y: 0 },
+                        { x: 270, y: 0 },
+                        { x: 315, y: 0 },
+                    ]);
+                    break;
+                case hourlyWindData.windDeg[sliderValue] > 157 &&
+                    hourlyWindData.windDeg[sliderValue] <= 202:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: 0 },
+                        { x: 90, y: 0 },
+                        { x: 135, y: 0 },
+                        { x: 180, y: hourlyWindData.windSpeed[sliderValue] },
+                        { x: 225, y: 0 },
+                        { x: 270, y: 0 },
+                        { x: 315, y: 0 },
+                    ]);
+                    break;
+                case hourlyWindData.windDeg[sliderValue] > 202 &&
+                    hourlyWindData.windDeg[sliderValue] <= 247:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: 0 },
+                        { x: 90, y: 0 },
+                        { x: 135, y: 0 },
+                        { x: 180, y: 0 },
+                        { x: 225, y: hourlyWindData.windSpeed[sliderValue] },
+                        { x: 270, y: 0 },
+                        { x: 315, y: 0 },
+                    ]);
+                    break;
+                case hourlyWindData.windDeg[sliderValue] > 247 &&
+                    hourlyWindData.windDeg[sliderValue] <= 292:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: 0 },
+                        { x: 90, y: 0 },
+                        { x: 135, y: 0 },
+                        { x: 180, y: 0 },
+                        { x: 225, y: 0 },
+                        { x: 270, y: hourlyWindData.windSpeed[sliderValue] },
+                        { x: 315, y: 0 },
+                    ]);
+                    break;
+                case hourlyWindData.windDeg[sliderValue] > 292 &&
+                    hourlyWindData.windDeg[sliderValue] <= 337:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: 0 },
+                        { x: 90, y: 0 },
+                        { x: 135, y: 0 },
+                        { x: 180, y: 0 },
+                        { x: 225, y: 0 },
+                        { x: 270, y: 0 },
+                        { x: 315, y: hourlyWindData.windSpeed[sliderValue] },
+                    ]);
+                    break;
+                default:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: 0 },
+                        { x: 90, y: 0 },
+                        { x: 135, y: 0 },
+                        { x: 180, y: 0 },
+                        { x: 225, y: 0 },
+                        { x: 270, y: 0 },
+                        { x: 315, y: 0 },
+                    ]);
+            }
+        } else if (currentTab === 'Daily') {
+            switch (true) {
+                case dailyWindData.windDeg[sliderValue] > 337 &&
+                    dailyWindData.windDeg[sliderValue] <= 22:
+                    setWindSpeedBarData([
+                        { x: 0, y: dailyWindData.windSpeed[sliderValue] },
+                        { x: 45, y: 0 },
+                        { x: 90, y: 0 },
+                        { x: 135, y: 0 },
+                        { x: 180, y: 0 },
+                        { x: 225, y: 0 },
+                        { x: 270, y: 0 },
+                        { x: 315, y: 0 },
+                    ]);
+                    break;
+                case dailyWindData.windDeg[sliderValue] > 22 &&
+                    dailyWindData.windDeg[sliderValue] <= 67:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: dailyWindData.windSpeed[sliderValue] },
+                        { x: 90, y: 0 },
+                        { x: 135, y: 0 },
+                        { x: 180, y: 0 },
+                        { x: 225, y: 0 },
+                        { x: 270, y: 0 },
+                        { x: 315, y: 0 },
+                    ]);
+                    break;
+                case dailyWindData.windDeg[sliderValue] > 67 &&
+                    dailyWindData.windDeg[sliderValue] <= 112:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: 0 },
+                        { x: 90, y: dailyWindData.windSpeed[sliderValue] },
+                        { x: 135, y: 0 },
+                        { x: 180, y: 0 },
+                        { x: 225, y: 0 },
+                        { x: 270, y: 0 },
+                        { x: 315, y: 0 },
+                    ]);
+                    break;
+                case dailyWindData.windDeg[sliderValue] > 112 &&
+                    dailyWindData.windDeg[sliderValue] <= 157:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: 0 },
+                        { x: 90, y: 0 },
+                        { x: 135, y: dailyWindData.windSpeed[sliderValue] },
+                        { x: 180, y: 0 },
+                        { x: 225, y: 0 },
+                        { x: 270, y: 0 },
+                        { x: 315, y: 0 },
+                    ]);
+                    break;
+                case dailyWindData.windDeg[sliderValue] > 157 &&
+                    dailyWindData.windDeg[sliderValue] <= 202:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: 0 },
+                        { x: 90, y: 0 },
+                        { x: 135, y: 0 },
+                        { x: 180, y: dailyWindData.windSpeed[sliderValue] },
+                        { x: 225, y: 0 },
+                        { x: 270, y: 0 },
+                        { x: 315, y: 0 },
+                    ]);
+                    break;
+                case dailyWindData.windDeg[sliderValue] > 202 &&
+                    dailyWindData.windDeg[sliderValue] <= 247:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: 0 },
+                        { x: 90, y: 0 },
+                        { x: 135, y: 0 },
+                        { x: 180, y: 0 },
+                        { x: 225, y: dailyWindData.windSpeed[sliderValue] },
+                        { x: 270, y: 0 },
+                        { x: 315, y: 0 },
+                    ]);
+                    break;
+                case dailyWindData.windDeg[sliderValue] > 247 &&
+                    dailyWindData.windDeg[sliderValue] <= 292:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: 0 },
+                        { x: 90, y: 0 },
+                        { x: 135, y: 0 },
+                        { x: 180, y: 0 },
+                        { x: 225, y: 0 },
+                        { x: 270, y: dailyWindData.windSpeed[sliderValue] },
+                        { x: 315, y: 0 },
+                    ]);
+                    break;
+                case dailyWindData.windDeg[sliderValue] > 292 &&
+                    dailyWindData.windDeg[sliderValue] <= 337:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: 0 },
+                        { x: 90, y: 0 },
+                        { x: 135, y: 0 },
+                        { x: 180, y: 0 },
+                        { x: 225, y: 0 },
+                        { x: 270, y: 0 },
+                        { x: 315, y: dailyWindData.windSpeed[sliderValue] },
+                    ]);
+                    break;
+                default:
+                    setWindSpeedBarData([
+                        { x: 0, y: 0 },
+                        { x: 45, y: 0 },
+                        { x: 90, y: 0 },
+                        { x: 135, y: 0 },
+                        { x: 180, y: 0 },
+                        { x: 225, y: 0 },
+                        { x: 270, y: 0 },
+                        { x: 315, y: 0 },
+                    ]);
+            }
+        }
+    }, [sliderValue, currentTab]);
+
     const renderWeatherType = (weatherType: WindDataChart) => (
         <>
             <div className="compass">
                 <VictoryChart
                     width={GRAPH_SIZE.width - 200}
-                    height={GRAPH_SIZE.height - 50}
+                    height={GRAPH_SIZE.height - 20}
                     polar
+                    theme={VictoryTheme.material}
                 >
                     <VictoryPolarAxis
-                        theme={VictoryTheme.material}
                         dependentAxis
+                        domain={[
+                            weatherType.minMaxWindSpeed[0],
+                            weatherType.minMaxWindSpeed[1],
+                        ]}
                         labelPlacement="perpendicular"
-                        axisAngle={weatherType.windDeg[sliderValue]}
-                        tickFormat={(t) => `${t}`}
-                        tickValues={['', '^']}
-                        tickLabelComponent={
-                            <VictoryLabel style={[{ fontSize: '15px' }]} />
-                        }
+                        tickFormat={(t) => `${t}mph`}
+                        axisAngle={90}
+                        standalone={false}
                     />
                     <VictoryPolarAxis
                         labelPlacement="vertical"
                         tickValues={_.keys(DIRECTIONS).map((k) => +k)}
                         tickFormat={_.values(DIRECTIONS)}
+                        standalone={false}
+                    />
+                    <VictoryBar
+                        style={{ data: { fill: 'cornflowerblue', width: 80 } }}
+                        data={windSpeedBarData}
                     />
                 </VictoryChart>
                 <div className="slider-container">
@@ -125,7 +415,6 @@ const Wind: FC = () => {
             </div>
         </>
     );
-
     return (
         <>
             {currentTab === DEFAULT_TABS.hourly

@@ -19,6 +19,7 @@ interface WeatherProviderProps {
 }
 
 interface WeatherContextType {
+    isLoading: boolean;
     weatherData: OneCallWeatherAPI;
     searchCity: string;
     setSearchCity?: React.Dispatch<React.SetStateAction<string>>;
@@ -32,6 +33,7 @@ interface WeatherContextType {
 }
 
 const defaultValue: WeatherContextType = {
+    isLoading: true,
     currentCity: '',
     weatherData: DEFAULT_WEATHER_STATE,
     searchCity: '',
@@ -54,6 +56,7 @@ const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
         useState<WeatherContextType['searchCity']>('');
     const [coords, setCoords] = useState<Coords>({ latitude: 0, longitude: 0 });
     const [zoomDomain, setZoomDomain] = useState<GraphZoom>(GRAPH_ZOOM);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const handleSearchCityInput = (searchInput: string) => {
         setSearchCity(searchInput);
@@ -87,6 +90,7 @@ const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
             .then((response) => response.json())
             .then((data) => {
                 setWeatherByCity(data);
+                setIsLoading(false);
             })
             .catch(() => setCoords({ latitude: 0, longitude: 0 }));
         fetch(
@@ -136,6 +140,7 @@ const WeatherProvider: FC<WeatherProviderProps> = ({ children }) => {
     return (
         <WeatherContext.Provider
             value={{
+                isLoading,
                 weatherData: weatherByCity,
                 searchCity,
                 setSearchCity,
