@@ -377,7 +377,7 @@ const Wind: FC = () => {
                         standalone={false}
                     />
                     <VictoryBar
-                        style={{ data: { fill: 'cornflowerblue', width: 35 } }}
+                        style={{ data: { fill: 'cornflowerblue', width: 40 } }}
                         data={windSpeedBarData}
                     />
                 </VictoryChart>
